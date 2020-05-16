@@ -19,7 +19,8 @@ const uuidv5 = require(`uuid/v5`);
 module.exports.makeID = (options) => {
   let value = ``;
 
-  const uuidRegex = /([a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}){1}/;
+  const uuidRegex =
+    /([a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}){1}/;
 
   // apply default settings if necessary
   try {
@@ -291,7 +292,7 @@ function makeID256(seed) {
 //
 // EXAMPLE OPTIONS
 // const options = {
-//   size: 64, // how many bytes of hexadecimal data to generate
+//   size: 64, // how many bytes of hexadecimal data to generate - 512 bits = 64 bytes
 //   isSecure: false,
 // };
 // NOTE size is in BYTES : 1 BYTE = 8 BITS = 2 HEX Characters
@@ -318,7 +319,9 @@ module.exports.makeHash = (options) => {
     }
   } catch (ex) {
     // ? TODO
-    throw new Error(`An exception error occurred while attempting to parse the options for the hash generation function : ${ex.message}`);
+    throw new Error(
+      `An exception error occurred while attempting to parse the options for the hash generation function : ${ex.message}`,
+    );
   }
 
   let numString = ``;
@@ -399,218 +402,28 @@ module.exports.makeKey = (options) => {
     }
     if (options.size % 1 !== 0 || options.size < 1) {
       // error, size must be an integer greater than or equal to 1
-      throw new Error(`The size options for the key generation function was not an integer (whole number) greater than or equal to 1.`);
+      throw new Error(
+        `The size options for the key generation function was not an integer (whole number) greater than or equal to 1.`,
+      );
     }
   } catch (ex) {
-    throw new Error(`An exception error occurred while attempting to parse the options for the key generation function : ${ex.message}`);
+    throw new Error(
+      `An exception error occurred while attempting to parse the options for the key generation function : ${ex.message}`,
+    );
   }
 
-  let divisor = 0;
-  let upperRange = 3844;
+  let upperRange = 36;
   if (options.isComplex === true) {
-    divisor = 62;
-    upperRange = 3844;
+    upperRange = 62;
   } else {
-    divisor = 36;
-    upperRange = 1296;
+    upperRange = 36;
   }
   let result = ``;
+  const characters =
+    `0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ`;
   for (let i = 0; i < options.size; i += 1) {
-    let rando = Math.floor(Math.random() * upperRange) + 1;
-    rando %= divisor;
-    let currentChar = `0`;
-    switch (rando) {
-      case 0:
-        currentChar = `0`;
-        break;
-      case 1:
-        currentChar = `1`;
-        break;
-      case 2:
-        currentChar = `2`;
-        break;
-      case 3:
-        currentChar = `3`;
-        break;
-      case 4:
-        currentChar = `4`;
-        break;
-      case 5:
-        currentChar = `5`;
-        break;
-      case 6:
-        currentChar = `6`;
-        break;
-      case 7:
-        currentChar = `7`;
-        break;
-      case 8:
-        currentChar = `8`;
-        break;
-      case 9:
-        currentChar = `9`;
-        break;
-      case 10:
-        currentChar = `a`;
-        break;
-      case 11:
-        currentChar = `b`;
-        break;
-      case 12:
-        currentChar = `c`;
-        break;
-      case 13:
-        currentChar = `d`;
-        break;
-      case 14:
-        currentChar = `e`;
-        break;
-      case 15:
-        currentChar = `f`;
-        break;
-      case 16:
-        currentChar = `g`;
-        break;
-      case 17:
-        currentChar = `h`;
-        break;
-      case 18:
-        currentChar = `i`;
-        break;
-      case 19:
-        currentChar = `j`;
-        break;
-      case 20:
-        currentChar = `k`;
-        break;
-      case 21:
-        currentChar = `l`;
-        break;
-      case 22:
-        currentChar = `m`;
-        break;
-      case 23:
-        currentChar = `n`;
-        break;
-      case 24:
-        currentChar = `o`;
-        break;
-      case 25:
-        currentChar = `p`;
-        break;
-      case 26:
-        currentChar = `q`;
-        break;
-      case 27:
-        currentChar = `r`;
-        break;
-      case 28:
-        currentChar = `s`;
-        break;
-      case 29:
-        currentChar = `t`;
-        break;
-      case 30:
-        currentChar = `u`;
-        break;
-      case 31:
-        currentChar = `v`;
-        break;
-      case 32:
-        currentChar = `w`;
-        break;
-      case 33:
-        currentChar = `x`;
-        break;
-      case 34:
-        currentChar = `y`;
-        break;
-      case 35:
-        currentChar = `z`;
-        break;
-      case 36:
-        currentChar = `A`;
-        break;
-      case 37:
-        currentChar = `B`;
-        break;
-      case 38:
-        currentChar = `C`;
-        break;
-      case 39:
-        currentChar = `D`;
-        break;
-      case 40:
-        currentChar = `E`;
-        break;
-      case 41:
-        currentChar = `F`;
-        break;
-      case 42:
-        currentChar = `G`;
-        break;
-      case 43:
-        currentChar = `H`;
-        break;
-      case 44:
-        currentChar = `I`;
-        break;
-      case 45:
-        currentChar = `J`;
-        break;
-      case 46:
-        currentChar = `K`;
-        break;
-      case 47:
-        currentChar = `L`;
-        break;
-      case 48:
-        currentChar = `M`;
-        break;
-      case 49:
-        currentChar = `N`;
-        break;
-      case 50:
-        currentChar = `O`;
-        break;
-      case 51:
-        currentChar = `P`;
-        break;
-      case 52:
-        currentChar = `Q`;
-        break;
-      case 53:
-        currentChar = `R`;
-        break;
-      case 54:
-        currentChar = `S`;
-        break;
-      case 55:
-        currentChar = `T`;
-        break;
-      case 56:
-        currentChar = `U`;
-        break;
-      case 57:
-        currentChar = `V`;
-        break;
-      case 58:
-        currentChar = `W`;
-        break;
-      case 59:
-        currentChar = `X`;
-        break;
-      case 60:
-        currentChar = `Y`;
-        break;
-      case 61:
-        currentChar = `Z`;
-        break;
-      default:
-        currentChar = `0`;
-        break;
-    }
-    result += currentChar;
+    const rando = Math.floor(Math.random() * upperRange);
+    result += characters[rando];
   }
   return result;
 };
@@ -639,7 +452,9 @@ module.exports.encryptPassword = (hash, salt, options) => {
     }
   } catch (ex) {
     // ? TODO
-    throw new Error(`An exception error occurred while attempting to parse the options for the password encryption function : ${ex.message}`);
+    throw new Error(
+      `An exception error occurred while attempting to parse the options for the password encryption function : ${ex.message}`,
+    );
   }
 
   value = this.saltHash(hash, salt);
@@ -693,14 +508,18 @@ module.exports.toBoolean = (value) => {
       return true;
     }
     return false;
-  } if (typeof value === `string`) {
+  }
+  if (typeof value === `string`) {
     value = value.toLowerCase();
     if (value === `true` || value === `yes` || value === `y` || value === `1`) {
       return true;
     }
     return false;
-  } if (typeof value === `boolean`) {
+  }
+  if (typeof value === `boolean`) {
     return value;
   }
-  throw new Error(`Error attempting to parse ${JSON.stringify(value)} as a boolean value.`);
+  throw new Error(
+    `Error attempting to parse ${JSON.stringify(value)} as a boolean value.`,
+  );
 };
