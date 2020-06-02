@@ -19,8 +19,7 @@ const uuidv5 = require(`uuid/v5`);
 module.exports.makeID = (options) => {
   let value = ``;
 
-  const uuidRegex =
-    /([a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}){1}/;
+  const uuidRegex = /([a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}){1}/;
 
   // apply default settings if necessary
   try {
@@ -419,8 +418,7 @@ module.exports.makeKey = (options) => {
     upperRange = 36;
   }
   let result = ``;
-  const characters =
-    `0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ`;
+  const characters = `0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ`;
   for (let i = 0; i < options.size; i += 1) {
     const rando = Math.floor(Math.random() * upperRange);
     result += characters[rando];
@@ -434,7 +432,7 @@ module.exports.makeKey = (options) => {
 //
 // EXAMPLE OPTIONS
 // const exOptions = {
-//   security: 3
+//   count: 3
 // };
 module.exports.encryptPassword = (hash, salt, options) => {
   let value = ``;
@@ -443,12 +441,12 @@ module.exports.encryptPassword = (hash, salt, options) => {
   try {
     if (options === undefined || typeof options !== `object`) {
       options = {
-        security: 3,
+        count: 3,
       };
-    } else if (options.security === undefined) {
-      options.security = 3;
+    } else if (options.count === undefined) {
+      options.count = 3;
     } else {
-      options.security = Number(options.security);
+      options.count = Number(options.count);
     }
   } catch (ex) {
     // ? TODO
@@ -458,7 +456,7 @@ module.exports.encryptPassword = (hash, salt, options) => {
   }
 
   value = this.saltHash(hash, salt);
-  value = this.hashString(value, (2 ** options.security));
+  value = this.hashString(value, options.count);
 
   return value;
 };
