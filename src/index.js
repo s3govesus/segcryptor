@@ -456,7 +456,7 @@ module.exports.encryptPassword = (hash, salt, options) => {
   }
 
   value = this.saltHash(hash, salt);
-  value = this.hashString(value, options.count);
+  value = this.hashValue(value, options);
 
   return value;
 };
@@ -468,15 +468,20 @@ module.exports.saltHash = (hash, salt) => {
   let value = ``;
 
   // if the hash and string are the same length, interleave the two
-  if (hash.length === salt.length) {
-    for (let i = 0; i < hash.length; i += 1) {
-      value += hash.charAt(i) + salt.charAt(i);
-    }
-  } else { // otherwise, simply concatenate the strings
-    value = hash + salt + hash + salt + hash;
+  let longer = 0;
+  if (hash.length > salt.length) {
+    longer = hash.length;
+  } else {
+    longer = salt.length;
   }
-  // hash the string using the SHA-512 algorithm
-  value = this.hashString(value);
+  for (let i = 0; i < longer; i += 1) {
+    if (i < hash.length) {
+      value += hash[i];
+    }
+    if (i < salt.length) {
+      value += salt[i];
+    }
+  }
 
   return value;
 };
@@ -484,13 +489,25 @@ module.exports.saltHash = (hash, salt) => {
 /******************************************************************************/
 
 // takes a string and applies a SHA-512 encryption hashing algorithm to it multiple times (to help prevent certain types of attacks)
-module.exports.hashString = (str, count) => {
+//
+// EXAMPLE OPTIONS
+// exOptions = {
+//   count: 1,
+// };
+module.exports.hashValue = (str, options) => {
   let value = str;
 
-  if (count === undefined) {
-    count = 1;
+  if (options === undefined) {
+    options = {
+      count: 1,
+    };
+  } else if (options.count === undefined) {
+    options.count = 1;
+  } else {
+    options.count = Number(options.count);
   }
-  for (let i = 0; i < count; i += 1) {
+
+  for (let i = 0; i < options.count; i += 1) {
     value = sha512Hex(value);
   }
 
