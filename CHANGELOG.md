@@ -1,7 +1,7 @@
 ## CHANGELOG
 
 ### 3 : encryptPassword security
-- changeed the `security` property on the `options` parameter for `encryptPassword()` to `count` and made it so it is no longer exponentially applied
+- changed the `security` property on the `options` parameter for `encryptPassword()` to `count` and made it so it is no longer exponentially applied
 
 ### 2 : optimized makeKey()
 - optimized the code for `makeKey()`
