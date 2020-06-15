@@ -150,3 +150,5 @@ console.log(`saltedHash: ${saltedHash}\r\n`);
 // test applying the SHA-512 algorithm to a string
 const exampleHashString = hashString(`this is an example`, 5);
 console.log(`exampleHashString: ${exampleHashString}\r\n`);
+
+// TODO add encrypt and decrypt tests

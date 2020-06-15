@@ -4,6 +4,7 @@ const uuidv1 = require(`uuid/v1`);
 const uuidv3 = require(`uuid/v3`);
 const uuidv4 = require(`uuid/v4`);
 const uuidv5 = require(`uuid/v5`);
+const crypto = require(`crypto`);
 
 /******************************************************************************/
 
@@ -18,8 +19,6 @@ const uuidv5 = require(`uuid/v5`);
 // };
 module.exports.makeID = (options) => {
   let value = ``;
-
-  const uuidRegex = /([a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}){1}/;
 
   // apply default settings if necessary
   try {
@@ -58,6 +57,7 @@ module.exports.makeID = (options) => {
   }
 
   // decide what kind of ID to generate based on the options parameter and do it
+  const uuidRegex = /([a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}){1}/;
   let part1 = ``;
   let part2 = ``;
   switch (options.version) {
@@ -484,6 +484,66 @@ module.exports.saltHash = (hash, salt) => {
   }
 
   return value;
+};
+
+/******************************************************************************/
+
+// encrypts a string using the 'aes-256-cbc' algorithm
+// key and iv can be hexadecimal strings or a byte array
+// returns a hexadecimal string
+module.exports.encrypt = (str, key, iv) => {
+  // convert key as necessary
+  let key2 = key;
+  if (typeof key2 === `string`) {
+    key2 = Buffer.from(key2, `hex`);
+  }
+  // convert iv as necessary
+  let iv2 = iv;
+  if (typeof iv2 === `string`) {
+    iv2 = Buffer.from(iv2, `hex`);
+  }
+
+  // creating cipheriv with its parameter
+  const cipher = crypto.createCipheriv(`aes-256-cbc`, Buffer.from(key2), iv2);
+
+  // updating text
+  let encrypted = cipher.update(str);
+
+  // using concatenation
+  encrypted = Buffer.concat([encrypted, cipher.final()]);
+
+  // returning iv and encrypted data
+  return encrypted.toString(`hex`);
+};
+
+/******************************************************************************/
+
+// decrypts a string that's been encrypted using the 'aes-256-cbc' algorithm
+module.exports.decrypt = (data, key, iv) => {
+  // if key is a hexadecimal string, convert it to a byte array buffer
+  let key2 = key;
+  if (typeof key2 === `string`) {
+    key2 = Buffer.from(key2, `hex`);
+  }
+  // if iv is a hexadecimal string, convert it to a byte array buffer
+  let iv2 = iv;
+  if (typeof iv2 === `string`) {
+    iv2 = Buffer.from(iv2, `hex`);
+  }
+  // convert the encrypted data to a byte array buffer
+  const encryptedText = Buffer.from(data, `hex`);
+
+  // create a decipher
+  const decipher = crypto.createDecipheriv(
+    `aes-256-cbc`, Buffer.from(key2), iv2,
+  );
+
+  // updating encrypted text
+  let decrypted = decipher.update(encryptedText);
+  decrypted = Buffer.concat([decrypted, decipher.final()]);
+
+  // returns data after decryption
+  return decrypted.toString();
 };
 
 /******************************************************************************/
