@@ -1,5 +1,8 @@
 ## CHANGELOG
 
+### 6 : v1.2.2 : randomBytes wrapper
+- added `randomBytes()`, a wrapper for `crypto.randomBytes()` as instances where you would use `encrypt()` or `decrypt()` would commonly want to use that function to generate random bytes of data
+
 ### 5 : v1.2.1 : encrypt and decrypt
 - added `encrypt()` which takes a string and encrypts it using the `'aes-256-cbc'` algorithm, given a key and IV
 - added `decrypt()` which decrypts an `'aes-256-cbc'` encrypted string, given a key and IV

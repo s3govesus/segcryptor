@@ -598,3 +598,8 @@ module.exports.toBoolean = (value) => {
     `Error attempting to parse ${JSON.stringify(value)} as a boolean value.`,
   );
 };
+
+/******************************************************************************/
+
+// a wrapper for crypto.randomBytes, as this will commonly be used with encrypt() and decrypt()
+module.exports.randomBytes = (size) => crypto.randomBytes(size);
