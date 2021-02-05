@@ -6,7 +6,7 @@ const {
 
 // test generating a UUIDv1
 const exampleMakeIDv1 = makeID({
-  version: 1,
+  version: `1`,
 });
 console.log(`exampleMakeIDv1: ${exampleMakeIDv1}\r\n`);
 
@@ -18,7 +18,7 @@ console.log(`exampleMakeIDv1: ${exampleMakeIDv1}\r\n`);
 // a URL, like 'https://google.com'
 // a DNS address, like 'google.com'
 const exampleMakeIDv3 = makeID({
-  version: 3,
+  version: `3`,
   name: `segcryptor! test`,
   namespace: `2762ad30-9dc8-5cf2-8042-8cd411d450fc`,
 });
@@ -28,7 +28,7 @@ console.log(`exampleMakeIDv3: ${exampleMakeIDv3}\r\n`);
 
 // test generating a blend of UUIDv1 and UUIDv3
 const exampleMakeIDv13 = makeID({
-  version: 1.3,
+  version: `1.3`,
   name: `segcryptor! test`,
   namespace: `https://github.com/s3govesus/segcryptor`,
 });
@@ -38,7 +38,7 @@ console.log(`exampleMakeIDv13: ${exampleMakeIDv13}\r\n`);
 
 // test generating a blend of UUIDv3 and UUIDv1
 const exampleMakeIDv31 = makeID({
-  version: 3.1,
+  version: `3.1`,
   name: `segcryptor! test`,
   namespace: `https://github.com/s3govesus/segcryptor`,
 });
@@ -48,7 +48,7 @@ console.log(`exampleMakeIDv31: ${exampleMakeIDv31}\r\n`);
 
 // test generating a UUIDv4
 const exampleMakeIDv4 = makeID({
-  version: 4,
+  version: `4`,
 });
 console.log(`exampleMakeIDv4: ${exampleMakeIDv4}\r\n`);
 
@@ -56,7 +56,7 @@ console.log(`exampleMakeIDv4: ${exampleMakeIDv4}\r\n`);
 
 // test generating a blend of UUIDv1 and UUIDv4
 const exampleMakeIDv14 = makeID({
-  version: 1.4,
+  version: `1.4`,
 });
 console.log(`exampleMakeIDv14: ${exampleMakeIDv14}\r\n`);
 
@@ -64,7 +64,7 @@ console.log(`exampleMakeIDv14: ${exampleMakeIDv14}\r\n`);
 
 // test generating a blend of UUIDv4 and UUIDv1
 const exampleMakeIDv41 = makeID({
-  version: 4.1,
+  version: `4.1`,
 });
 console.log(`exampleMakeIDv41: ${exampleMakeIDv41}\r\n`);
 
@@ -72,7 +72,7 @@ console.log(`exampleMakeIDv41: ${exampleMakeIDv41}\r\n`);
 
 // test generating a UUIDv5
 const exampleMakeIDv5 = makeID({
-  version: 5,
+  version: `5`,
   name: `segcryptor! test`,
   namespace: `https://github.com/s3govesus/segcryptor`,
 });
@@ -82,7 +82,7 @@ console.log(`exampleMakeIDv5: ${exampleMakeIDv5}\r\n`);
 
 // test generating a blend of UUIDv1 and UUIDv5
 const exampleMakeIDv15 = makeID({
-  version: 1.5,
+  version: `1.5`,
   name: `segcryptor! test`,
   namespace: `https://github.com/s3govesus/segcryptor`,
 });
@@ -92,7 +92,7 @@ console.log(`exampleMakeIDv15: ${exampleMakeIDv15}\r\n`);
 
 // test generating a blend of UUIDv5 and UUIDv1
 const exampleMakeIDv51 = makeID({
-  version: 5.1,
+  version: `5.1`,
   name: `segcryptor! test`,
   namespace: `https://github.com/s3govesus/segcryptor`,
 });
@@ -102,7 +102,7 @@ console.log(`exampleMakeIDv51: ${exampleMakeIDv51}\r\n`);
 
 // test generating a 256-bit abomination
 const exampleMakeIDv0 = makeID({
-  version: 0,
+  version: `0`,
   seed: `lalalalalalalalalala`,
 });
 console.log(`exampleMakeIDv0: ${exampleMakeIDv0}\r\n`);
@@ -111,7 +111,7 @@ console.log(`exampleMakeIDv0: ${exampleMakeIDv0}\r\n`);
 
 // test generating a 256-bit abomination v01
 const exampleMakeIDv01 = makeID({
-  version: 0.1,
+  version: `0.1`,
   seed: `oh no, this is horrible!`,
 });
 console.log(`exampleMakeIDv01: ${exampleMakeIDv01}\r\n`);

@@ -34,8 +34,8 @@ module.exports.makeID = (options) => {
     } else {
       if (options.version === undefined) {
         options.version = `4`;
-      } else {
-        options.version = options.version.toString();
+      } else if (typeof options.version !== `string`) {
+        throw new Error(`The value for the 'version' option in makeID() must be a string.`);
       }
       if (options.name === undefined) {
         options.name = Date.now().toString();
