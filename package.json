@@ -1,6 +1,6 @@
 {
   "name": "segcryptor",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "Some encryption stuff",
   "main": "src/index.js",
   "scripts": {
@@ -19,15 +19,11 @@
   },
   "homepage": "https://github.com/s3govesus/segcryptor#readme",
   "dependencies": {
-    "uuid": "^3.3.3"
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
-    "eslint": "^6.8.0",
-    "eslint-config-airbnb-base": "^14.0.0",
-    "eslint-config-standard": "^14.1.0",
-    "eslint-plugin-import": "^2.20.1",
-    "eslint-plugin-node": "^10.0.0",
-    "eslint-plugin-promise": "^4.2.1",
-    "eslint-plugin-standard": "^4.0.1"
+    "eslint": "^7.19.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.22.1"
   }
 }

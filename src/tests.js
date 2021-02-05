@@ -1,5 +1,5 @@
 const {
-  makeID, makeHash, makeKey, encryptPassword, hashString, saltHash,
+  makeID, makeHash, makeKey, encryptPassword, hashValue, saltHash,
 } = require(`../src/index`);
 
 /******************************************************************************/
@@ -20,7 +20,7 @@ console.log(`exampleMakeIDv1: ${exampleMakeIDv1}\r\n`);
 const exampleMakeIDv3 = makeID({
   version: 3,
   name: `segcryptor! test`,
-  namespace: `12345678-1234-1234-1234-123456789012`,
+  namespace: `2762ad30-9dc8-5cf2-8042-8cd411d450fc`,
 });
 console.log(`exampleMakeIDv3: ${exampleMakeIDv3}\r\n`);
 
@@ -148,7 +148,7 @@ console.log(`saltedHash: ${saltedHash}\r\n`);
 /******************************************************************************/
 
 // test applying the SHA-512 algorithm to a string
-const exampleHashString = hashString(`this is an example`, 5);
-console.log(`exampleHashString: ${exampleHashString}\r\n`);
+const exampleHashValue = hashValue(`this is an example`, { count: 5 });
+console.log(`exampleHashValue: ${exampleHashValue}\r\n`);
 
 // TODO add encrypt and decrypt tests

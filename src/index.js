@@ -1,9 +1,9 @@
 const { sha512Hex } = require(`./sha`);
-const uuidv1 = require(`uuid/v1`);
+const { v1: uuidv1 } = require(`uuid`);
 // there is no uuidv2 function
-const uuidv3 = require(`uuid/v3`);
-const uuidv4 = require(`uuid/v4`);
-const uuidv5 = require(`uuid/v5`);
+const { v3: uuidv3 } = require(`uuid`);
+const { v4: uuidv4 } = require(`uuid`);
+const { v5: uuidv5 } = require(`uuid`);
 const crypto = require(`crypto`);
 
 /******************************************************************************/
@@ -57,7 +57,7 @@ module.exports.makeID = (options) => {
   }
 
   // decide what kind of ID to generate based on the options parameter and do it
-  const uuidRegex = /([a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}){1}/;
+  const uuidRegex = /^([a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12})$/g;
   let part1 = ``;
   let part2 = ``;
   switch (options.version) {
@@ -65,7 +65,7 @@ module.exports.makeID = (options) => {
       value = uuidv1();
       break;
     case 3:
-      // if the namespace isn't already a valid UUID, make it one
+      // if the namespace isn't already a valid UUID namespace, make it one
       if (uuidRegex.test(options.namespace) === false) {
         if (options.namespace.indexOf(`://`) >= 0) {
           options.namespace = uuidv3(options.namespace, uuidv3.URL);
@@ -164,6 +164,7 @@ module.exports.makeID = (options) => {
         }
       }
       part1 = uuidv5(options.name, options.namespace);
+      part1 = part1.substring(0, 18);
       part2 = uuidv1();
       part2 = part2.substring(18, part2.length);
       value = part1 + part2;
@@ -182,6 +183,7 @@ module.exports.makeID = (options) => {
 
   return value;
 };
+const { makeID } = this;
 
 /******************************************************************************/
 
@@ -192,15 +194,15 @@ function makeID256(seed) {
 
   // generate a SHA-512 hash of the current unix timestamp
   let hash = Date.now().toString();
-  hash = this.hashString(hash, 1);
+  hash = hashValue(hash, { count: 1 });
 
   if (seed === undefined) {
     seed = Date.now().toString();
   }
-  seed = this.hashString(seed, 1);
+  seed = hashValue(seed, { count: 1 });
 
-  hash = this.saltHash(hash, seed);
-  hash = this.hashString(hash, 3);
+  hash = saltHash(hash, seed);
+  hash = hashValue(hash, { count: 3 });
 
   // take the first 8 characters of the 128-character cryptographic hash
   result += hash.substring(0, 8);
@@ -366,6 +368,7 @@ module.exports.makeHash = (options) => {
 
   return numString;
 };
+const { makeHash } = this;
 
 /******************************************************************************/
 
@@ -425,10 +428,11 @@ module.exports.makeKey = (options) => {
   }
   return result;
 };
+const { makeKey } = this;
 
 /******************************************************************************/
 
-// applies salt to a password and then encrypts it
+// applies salt to a password and then runs the SHA-512 algorithm on it a number of times, determined by `options.count`
 //
 // EXAMPLE OPTIONS
 // const exOptions = {
@@ -460,6 +464,7 @@ module.exports.encryptPassword = (hash, salt, options) => {
 
   return value;
 };
+const { encryptPassword } = this;
 
 /******************************************************************************/
 
@@ -485,6 +490,7 @@ module.exports.saltHash = (hash, salt) => {
 
   return value;
 };
+const { saltHash } = this;
 
 /******************************************************************************/
 
@@ -515,6 +521,7 @@ module.exports.encrypt = (str, key, iv) => {
   // returning iv and encrypted data
   return encrypted.toString(`hex`);
 };
+const { encrypt } = this;
 
 /******************************************************************************/
 
@@ -545,6 +552,7 @@ module.exports.decrypt = (data, key, iv) => {
   // returns data after decryption
   return decrypted.toString();
 };
+const { decrypt } = this;
 
 /******************************************************************************/
 
@@ -573,6 +581,7 @@ module.exports.hashValue = (str, options) => {
 
   return value;
 };
+const { hashValue } = this;
 
 /******************************************************************************/
 
@@ -598,8 +607,10 @@ module.exports.toBoolean = (value) => {
     `Error attempting to parse ${JSON.stringify(value)} as a boolean value.`,
   );
 };
+const { toBoolean } = this;
 
 /******************************************************************************/
 
 // a wrapper for crypto.randomBytes, as this will commonly be used with encrypt() and decrypt()
 module.exports.randomBytes = (size) => crypto.randomBytes(size);
+const { randomBytes } = this;

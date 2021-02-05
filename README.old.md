@@ -12,8 +12,28 @@ This property on the options parameter specifies which version of UUID you want 
 ##### UUIDv1
 Concatenates the 48-bit MAC address of the computer generating the UUID with a 60-bit timestamp to generate an ID.
 
+```javascript
+// generate a UUIDv1 hash
+var id1 = makeID({
+  version: 1
+});
+
+// example value for 'id1' : '52c12a20-678e-11eb-a6b8-01190b56ba86'
+```
+
 ##### UUIDv3
 Hashes a namespace identifier with a name using MD5 as the hashing algorithm.
+
+```javascript
+// generate a UUIDv3 hash
+var id3 = makeID({
+  version: 3,
+  name: `some name`,
+  namespace: `https://somerandomandmadeupexample.com/`
+})
+
+// example value for 'id3' : 'e70fd313-5b5b-33ae-ba05-2f9f0edcfd55'
+```
 
 ##### UUIDv4
 Generates 122 bits of random data, with 5.3 undecillion possibilities, but note that this does create a very slight possibility of collisions.
