@@ -6,6 +6,8 @@ const { v4: uuidv4 } = require(`uuid`);
 const { v5: uuidv5 } = require(`uuid`);
 const crypto = require(`crypto`);
 
+const uuidRegex = /^([a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12})$/g;
+
 /******************************************************************************/
 
 // generates an ID usually made up of one or more of the UUID algorithms
@@ -31,9 +33,9 @@ module.exports.makeID = (options) => {
       };
     } else {
       if (options.version === undefined) {
-        options.version = 4;
+        options.version = `4`;
       } else {
-        options.version = Number(options.version);
+        options.version = options.version.toString();
       }
       if (options.name === undefined) {
         options.name = Date.now().toString();
@@ -57,133 +59,437 @@ module.exports.makeID = (options) => {
   }
 
   // decide what kind of ID to generate based on the options parameter and do it
-  const uuidRegex = /^([a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12})$/g;
-  let part1 = ``;
-  let part2 = ``;
   switch (options.version) {
-    case 1:
-      value = uuidv1();
+    case `1`:
+      value = makev1();
       break;
-    case 3:
-      // if the namespace isn't already a valid UUID namespace, make it one
-      if (uuidRegex.test(options.namespace) === false) {
-        if (options.namespace.indexOf(`://`) >= 0) {
-          options.namespace = uuidv3(options.namespace, uuidv3.URL);
-        } else {
-          options.namespace = uuidv3(options.namespace, uuidv3.DNS);
-        }
-      }
-      // and then generate the actual result value UUID using that namespace + the name
-      value = uuidv3(options.name, options.namespace);
+    case `3`:
+      value = makev3(options);
       break;
-    case 1.3:
-      part1 = uuidv1();
-      // if the namespace is already a UUID
-      // if the namespace isn't already a valid UUID, make it one
-      if (uuidRegex.test(options.namespace) === false) {
-        if (options.namespace.indexOf(`://`) >= 0) {
-          options.namespace = uuidv3(options.namespace, uuidv3.URL);
-        } else {
-          options.namespace = uuidv3(options.namespace, uuidv3.DNS);
-        }
-      }
-      // and then generate the actual result value UUID using that namespace + the name
-      part2 = uuidv3(options.name, options.namespace);
-      part1 = part1.substring(0, 18);
-      part2 = part2.substring(18, part2.length);
-      value = part1 + part2;
+    case `1.3`:
+      value = makev13(options);
       break;
-    case 3.1:
-      // if the namespace is already a UUID
-      // if the namespace isn't already a valid UUID, make it one
-      if (uuidRegex.test(options.namespace) === false) {
-        if (options.namespace.indexOf(`://`) >= 0) {
-          options.namespace = uuidv3(options.namespace, uuidv3.URL);
-        } else {
-          options.namespace = uuidv3(options.namespace, uuidv3.DNS);
-        }
-      }
-      part1 = uuidv3(options.name, options.namespace);
-      part2 = uuidv1();
-      part1 = part1.substring(0, 18);
-      part2 = part2.substring(18, part2.length);
-      value = part1 + part2;
+    case `3.1`:
+      value = makev31(options);
       break;
-    case 4:
-      value = uuidv4();
+    case `4`:
+      value = makev4();
       break;
-    case 1.4:
-      part1 = uuidv1();
-      part2 = uuidv4();
-      part1 = part1.substring(0, 18);
-      part2 = part2.substring(18, part2.length);
-      value = part1 + part2;
+    case `1.4`:
+      value = makev14();
       break;
-    case 4.1:
-      part1 = uuidv4();
-      part2 = uuidv1();
-      part1 = part1.substring(0, 18);
-      part2 = part2.substring(18, part2.length);
-      value = part1 + part2;
+    case `4.1`:
+      value = makev41();
       break;
-    case 5:
-      // if the namespace isn't already a valid UUID, make it one
-      if (uuidRegex.test(options.namespace) === false) {
-        if (options.namespace.indexOf(`://`) >= 0) {
-          options.namespace = uuidv5(options.namespace, uuidv5.URL);
-        } else {
-          options.namespace = uuidv5(options.namespace, uuidv5.DNS);
-        }
-      }
-      // and then generate the actual result value UUID using that namespace + the name
-      value = uuidv5(options.name, options.namespace);
+    case `5`:
+      value = makev5(options);
       break;
-    case 1.5:
-      part1 = uuidv1();
-      // if the namespace isn't already a valid UUID, make it one
-      if (uuidRegex.test(options.namespace) === false) {
-        if (options.namespace.indexOf(`://`) >= 0) {
-          options.namespace = uuidv5(options.namespace, uuidv5.URL);
-        } else {
-          options.namespace = uuidv5(options.namespace, uuidv5.DNS);
-        }
-      }
-      // and then generate the actual result value UUID using that namespace + the name
-      part2 = uuidv5(options.name, options.namespace);
-      part1 = part1.substring(0, 18);
-      part2 = part2.substring(18, part2.length);
-      value = part1 + part2;
+    case `1.5`:
+      value = makev15(options);
       break;
-    case 5.1:
-      // if the namespace isn't already a valid UUID, make it one
-      if (uuidRegex.test(options.namespace) === false) {
-        if (options.namespace.indexOf(`://`) >= 0) {
-          options.namespace = uuidv5(options.namespace, uuidv5.URL);
-        } else {
-          options.namespace = uuidv5(options.namespace, uuidv5.DNS);
-        }
-      }
-      part1 = uuidv5(options.name, options.namespace);
-      part1 = part1.substring(0, 18);
-      part2 = uuidv1();
-      part2 = part2.substring(18, part2.length);
-      value = part1 + part2;
+    case `5.1`:
+      value = makev51(options);
       break;
-    case 0: // randomly generated 256-bit uuid of my own design, with optional seed parameter
-      value = makeID256(options.seed);
+    case `0`: // randomly generated 256-bit uuid of my own design, with optional seed parameter
+      value = makev0(options);
       break;
-    default: // 1.4
-      part1 = uuidv1();
-      part2 = uuidv4();
-      part1 = part1.substring(0, 8);
-      part2 = part2.substring(8, part2.length);
-      value = part1 + part2;
+    case `0.1`:
+      value = makev01(options);
+      break;
+    case `1.0`:
+      value = makev10(options);
+      break;
+    case `0.3`:
+      value = makev03(options);
+      break;
+    case `3.0`:
+      value = makev30(options);
+      break;
+    case `0.4`:
+      value = makev04(options);
+      break;
+    case `4.0`:
+      value = makev40(options);
+      break;
+    case `0.5`:
+      value = makev05(options);
+      break;
+    case `5.0`:
+      value = makev50(options);
+      break;
+    default: // v4
+      value = makev4();
       break;
   }
 
   return value;
 };
 const { makeID } = this;
+
+/******************************************************************************/
+
+function makev1() {
+  let value = ``;
+
+  value = uuidv1();
+
+  return value;
+}
+
+/******************************************************************************/
+
+function makev3(options) {
+  let value = ``;
+
+  // if the namespace isn't already a valid UUID namespace, make it one
+  if (uuidRegex.test(options.namespace) === false) {
+    if (options.namespace.indexOf(`://`) >= 0) {
+      options.namespace = uuidv3(options.namespace, uuidv3.URL);
+    } else {
+      options.namespace = uuidv3(options.namespace, uuidv3.DNS);
+    }
+  }
+  // and then generate the actual result value UUID using that namespace + the name
+  value = uuidv3(options.name, options.namespace);
+
+  return value;
+}
+
+/******************************************************************************/
+
+function makev13(options) {
+  let value = ``;
+
+  let part1 = ``;
+  let part2 = ``;
+
+  part1 = uuidv1();
+  // if the namespace is already a UUID
+  // if the namespace isn't already a valid UUID, make it one
+  if (uuidRegex.test(options.namespace) === false) {
+    if (options.namespace.indexOf(`://`) >= 0) {
+      options.namespace = uuidv3(options.namespace, uuidv3.URL);
+    } else {
+      options.namespace = uuidv3(options.namespace, uuidv3.DNS);
+    }
+  }
+  // and then generate the actual result value UUID using that namespace + the name
+  part2 = uuidv3(options.name, options.namespace);
+  part1 = part1.substring(0, 18);
+  part2 = part2.substring(18, part2.length);
+  value = part1 + part2;
+
+  return value;
+}
+
+/******************************************************************************/
+
+function makev31(options) {
+  let value = ``;
+
+  let part1 = ``;
+  let part2 = ``;
+
+  // if the namespace isn't already a valid UUID, make it one
+  if (uuidRegex.test(options.namespace) === false) {
+    if (options.namespace.indexOf(`://`) >= 0) {
+      options.namespace = uuidv3(options.namespace, uuidv3.URL);
+    } else {
+      options.namespace = uuidv3(options.namespace, uuidv3.DNS);
+    }
+  }
+  part1 = uuidv3(options.name, options.namespace);
+  part2 = uuidv1();
+  part1 = part1.substring(0, 18);
+  part2 = part2.substring(18, part2.length);
+  value = part1 + part2;
+
+  return value;
+}
+
+/******************************************************************************/
+
+function makev4() {
+  let value = ``;
+
+  value = uuidv4();
+
+  return value;
+}
+
+/******************************************************************************/
+
+function makev14() {
+  let value = ``;
+
+  let part1 = ``;
+  let part2 = ``;
+
+  part1 = uuidv1();
+  part2 = uuidv4();
+  part1 = part1.substring(0, 18);
+  part2 = part2.substring(18, part2.length);
+  value = part1 + part2;
+
+  return value;
+}
+
+/******************************************************************************/
+
+function makev41() {
+  let value = ``;
+
+  let part1 = ``;
+  let part2 = ``;
+
+  part1 = uuidv4();
+  part2 = uuidv1();
+  part1 = part1.substring(0, 18);
+  part2 = part2.substring(18, part2.length);
+  value = part1 + part2;
+
+  return value;
+}
+
+/******************************************************************************/
+
+function makev5(options) {
+  let value = ``;
+
+  // if the namespace isn't already a valid UUID, make it one
+  if (uuidRegex.test(options.namespace) === false) {
+    if (options.namespace.indexOf(`://`) >= 0) {
+      options.namespace = uuidv5(options.namespace, uuidv5.URL);
+    } else {
+      options.namespace = uuidv5(options.namespace, uuidv5.DNS);
+    }
+  }
+  // and then generate the actual result value UUID using that namespace + the name
+  value = uuidv5(options.name, options.namespace);
+
+  return value;
+}
+
+/******************************************************************************/
+
+function makev15(options) {
+  let value = ``;
+
+  let part1 = ``;
+  let part2 = ``;
+
+  part1 = uuidv1();
+  // if the namespace isn't already a valid UUID, make it one
+  if (uuidRegex.test(options.namespace) === false) {
+    if (options.namespace.indexOf(`://`) >= 0) {
+      options.namespace = uuidv5(options.namespace, uuidv5.URL);
+    } else {
+      options.namespace = uuidv5(options.namespace, uuidv5.DNS);
+    }
+  }
+  // and then generate the actual result value UUID using that namespace + the name
+  part2 = uuidv5(options.name, options.namespace);
+  part1 = part1.substring(0, 18);
+  part2 = part2.substring(18, part2.length);
+  value = part1 + part2;
+
+  return value;
+}
+
+/******************************************************************************/
+
+function makev51(options) {
+  let value = ``;
+
+  let part1 = ``;
+  let part2 = ``;
+
+  // if the namespace isn't already a valid UUID, make it one
+  if (uuidRegex.test(options.namespace) === false) {
+    if (options.namespace.indexOf(`://`) >= 0) {
+      options.namespace = uuidv5(options.namespace, uuidv5.URL);
+    } else {
+      options.namespace = uuidv5(options.namespace, uuidv5.DNS);
+    }
+  }
+  part1 = uuidv5(options.name, options.namespace);
+  part1 = part1.substring(0, 18);
+  part2 = uuidv1();
+  part2 = part2.substring(18, part2.length);
+  value = part1 + part2;
+
+  return value;
+}
+
+/******************************************************************************/
+
+function makev0(options) {
+  let value = ``;
+
+  value = makeID256(options.seed);
+
+  return value;
+}
+
+/******************************************************************************/
+
+function makev01(options) {
+  let value = ``;
+
+  let part1 = ``;
+  let part2 = ``;
+
+  part1 = makeID256(options.seed);
+  part1 = part1.substring(0, 37);
+  part2 = uuidv1();
+  value = `${part1}${part2}`;
+
+  return value;
+}
+
+/******************************************************************************/
+
+function makev10(options) {
+  let value = ``;
+
+  let part1 = ``;
+  let part2 = ``;
+
+  part1 = uuidv1();
+  part2 = makeID256(options.seed);
+  part2 = part2.substring(36, part2.length);
+  value = `${part1}${part2}`;
+
+  return value;
+}
+
+/******************************************************************************/
+
+function makev03(options) {
+  let value = ``;
+
+  let part1 = ``;
+  let part2 = ``;
+
+  part1 = makeID256(options.seed);
+  part1 = part1.substring(0, 37);
+  // if the namespace isn't already a valid UUID namespace, make it one
+  if (uuidRegex.test(options.namespace) === false) {
+    if (options.namespace.indexOf(`://`) >= 0) {
+      options.namespace = uuidv3(options.namespace, uuidv3.URL);
+    } else {
+      options.namespace = uuidv3(options.namespace, uuidv3.DNS);
+    }
+  }
+  part2 = uuidv3(options.name, options.namespace);
+  value = `${part1}${part2}`;
+
+  return value;
+}
+
+/******************************************************************************/
+
+function makev30(options) {
+  let value = ``;
+
+  let part1 = ``;
+  let part2 = ``;
+
+  // if the namespace isn't already a valid UUID namespace, make it one
+  if (uuidRegex.test(options.namespace) === false) {
+    if (options.namespace.indexOf(`://`) >= 0) {
+      options.namespace = uuidv3(options.namespace, uuidv3.URL);
+    } else {
+      options.namespace = uuidv3(options.namespace, uuidv3.DNS);
+    }
+  }
+  part1 = uuidv3(options.name, options.namespace);
+  part2 = makeID256(options.seed);
+  part2 = part2.substring(36, part2.length);
+  value = `${part1}${part2}`;
+
+  return value;
+}
+
+/******************************************************************************/
+
+function makev04(options) {
+  let value = ``;
+
+  let part1 = ``;
+  let part2 = ``;
+
+  part1 = makeID256(options.seed);
+  part1 = part1.substring(0, 37);
+  part2 = uuidv4();
+  value = `${part1}${part2}`;
+
+  return value;
+}
+
+/******************************************************************************/
+
+function makev40(options) {
+  let value = ``;
+
+  let part1 = ``;
+  let part2 = ``;
+
+  part1 = uuidv4();
+  part2 = makeID256(options.seed);
+  part2 = part2.substring(36, part2.length);
+  value = `${part1}${part2}`;
+
+  return value;
+}
+
+/******************************************************************************/
+
+function makev05(options) {
+  let value = ``;
+
+  let part1 = ``;
+  let part2 = ``;
+
+  part1 = makeID256(options.seed);
+  part1 = part1.substring(0, 37);
+  // if the namespace isn't already a valid UUID, make it one
+  if (uuidRegex.test(options.namespace) === false) {
+    if (options.namespace.indexOf(`://`) >= 0) {
+      options.namespace = uuidv3(options.namespace, uuidv3.URL);
+    } else {
+      options.namespace = uuidv3(options.namespace, uuidv3.DNS);
+    }
+  }
+  part2 = uuidv5(options.name, options.namespace);
+  value = `${part1}${part2}`;
+
+  return value;
+}
+
+/******************************************************************************/
+
+function makev50(options) {
+  let value = ``;
+
+  let part1 = ``;
+  let part2 = ``;
+
+  // if the namespace isn't already a valid UUID, make it one
+  if (uuidRegex.test(options.namespace) === false) {
+    if (options.namespace.indexOf(`://`) >= 0) {
+      options.namespace = uuidv3(options.namespace, uuidv3.URL);
+    } else {
+      options.namespace = uuidv3(options.namespace, uuidv3.DNS);
+    }
+  }
+  part1 = uuidv5(options.name, options.namespace);
+  part2 = makeID256(options.seed);
+  part2 = part2.substring(36, part2.length);
+  value = `${part1}${part2}`;
+
+  return value;
+}
 
 /******************************************************************************/
 

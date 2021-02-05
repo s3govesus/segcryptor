@@ -2,9 +2,16 @@
 
 ### add `buffer` and `offset` options to v3, v1.3, v3.1, v5, v1.5, and v5.1
 
+### add an option for removing hyphens from the resulting UUID-generated strings
+
 ---
 
 ## CHANGELOG
+
+### 1.3.1-1 : 256-bit v0 hybrids
+- added `0.1`, `1.0`, `0.3`, `3.0`, `0.4`, `4.0`, `0.5`, and `5.0` versions for `makeID()`
+- added tests for the new versions of `makeID()`
+- modified the `version` option in `makeID()` to require a string as opposed to using a number, since new versions may get confused due to how numbers are interpreted by javascript
 
 ### 1.2.3-1 : hashValue and other fixes
 - fixed issues where functions where attempting to call `hashString()` which was changed to `hashValue()`

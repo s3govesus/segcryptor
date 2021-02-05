@@ -109,6 +109,79 @@ console.log(`exampleMakeIDv0: ${exampleMakeIDv0}\r\n`);
 
 /******************************************************************************/
 
+// test generating a 256-bit abomination v01
+const exampleMakeIDv01 = makeID({
+  version: 0.1,
+  seed: `oh no, this is horrible!`,
+});
+console.log(`exampleMakeIDv01: ${exampleMakeIDv01}\r\n`);
+
+/******************************************************************************/
+
+const exampleMakeIDv10 = makeID({
+  version: `1.0`,
+  seed: `oh boy, here we go again!`,
+});
+console.log(`exampleMakeIDv10: ${exampleMakeIDv10}\r\n`);
+
+/******************************************************************************/
+
+const exampleMakeIDv03 = makeID({
+  version: `0.3`,
+  seed: `great...`,
+  name: `this is an example name, i guess`,
+  namespace: `https://www.google.com`,
+});
+console.log(`exampleMakeIDv03: ${exampleMakeIDv03}\r\n`);
+
+/******************************************************************************/
+
+const exampleMakeIDv30 = makeID({
+  version: `3.0`,
+  seed: `this is some seed!`,
+  name: `names are dumb`,
+  namespace: `https://namespacesaredumber.com`,
+});
+console.log(`exampleMakeIDv30: ${exampleMakeIDv30}\r\n`);
+
+/******************************************************************************/
+
+const exampleMakeIDv04 = makeID({
+  version: `0.4`,
+  seed: `what is a seed?`,
+});
+console.log(`exampleMakeIDv04: ${exampleMakeIDv04}\r\n`);
+
+/******************************************************************************/
+
+const exampleMakeIDv40 = makeID({
+  version: `4.0`,
+  seed: `broccoli smells a lot like farts - it's my favorite vegetable!`,
+});
+console.log(`exampleMakeIDv40: ${exampleMakeIDv40}\r\n`);
+
+/******************************************************************************/
+
+const exampleMakeIDv05 = makeID({
+  version: `0.5`,
+  seed: `i hate you, kind of...`,
+  name: `it ain't what they call you, it's what you answer to`,
+  namespace: `https://wcfields.com`,
+});
+console.log(`exampleMakeIDv05: ${exampleMakeIDv05}\r\n`);
+
+/******************************************************************************/
+
+const exampleMakeIDv50 = makeID({
+  version: `5.0`,
+  seed: `a seed neither fears light nor darkness, but uses both to grow`,
+  name: `Matshona Dhliwayo`,
+  namespace: `https://matshonadhliwayo.net`,
+});
+console.log(`exampleMakeIDv50: ${exampleMakeIDv50}\r\n`);
+
+/******************************************************************************/
+
 // test creating a random hexadecimal string
 const exampleMakeHash = makeHash({
   size: 8,
