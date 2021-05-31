@@ -22,7 +22,7 @@ const exampleMakeIDv3 = makeID({
   name: `segcryptor! test`,
   namespace: `2762ad30-9dc8-5cf2-8042-8cd411d450fc`,
 });
-console.log(`exampleMakeIDv3: ${exampleMakeIDv3}\r\n`);
+console.log(`makeID : exampleMakeIDv3: ${exampleMakeIDv3}\r\n`);
 
 /******************************************************************************/
 
@@ -32,7 +32,7 @@ const exampleMakeIDv13 = makeID({
   name: `segcryptor! test`,
   namespace: `https://github.com/s3govesus/segcryptor`,
 });
-console.log(`exampleMakeIDv13: ${exampleMakeIDv13}\r\n`);
+console.log(`makeID : exampleMakeIDv13: ${exampleMakeIDv13}\r\n`);
 
 /******************************************************************************/
 
@@ -42,7 +42,7 @@ const exampleMakeIDv31 = makeID({
   name: `segcryptor! test`,
   namespace: `https://github.com/s3govesus/segcryptor`,
 });
-console.log(`exampleMakeIDv31: ${exampleMakeIDv31}\r\n`);
+console.log(`makeID : exampleMakeIDv31: ${exampleMakeIDv31}\r\n`);
 
 /******************************************************************************/
 
@@ -50,7 +50,7 @@ console.log(`exampleMakeIDv31: ${exampleMakeIDv31}\r\n`);
 const exampleMakeIDv4 = makeID({
   version: `4`,
 });
-console.log(`exampleMakeIDv4: ${exampleMakeIDv4}\r\n`);
+console.log(`makeID : exampleMakeIDv4: ${exampleMakeIDv4}\r\n`);
 
 /******************************************************************************/
 
@@ -58,7 +58,7 @@ console.log(`exampleMakeIDv4: ${exampleMakeIDv4}\r\n`);
 const exampleMakeIDv14 = makeID({
   version: `1.4`,
 });
-console.log(`exampleMakeIDv14: ${exampleMakeIDv14}\r\n`);
+console.log(`makeID : exampleMakeIDv14: ${exampleMakeIDv14}\r\n`);
 
 /******************************************************************************/
 
@@ -66,7 +66,7 @@ console.log(`exampleMakeIDv14: ${exampleMakeIDv14}\r\n`);
 const exampleMakeIDv41 = makeID({
   version: `4.1`,
 });
-console.log(`exampleMakeIDv41: ${exampleMakeIDv41}\r\n`);
+console.log(`makeID : exampleMakeIDv41: ${exampleMakeIDv41}\r\n`);
 
 /******************************************************************************/
 
@@ -76,7 +76,7 @@ const exampleMakeIDv5 = makeID({
   name: `segcryptor! test`,
   namespace: `https://github.com/s3govesus/segcryptor`,
 });
-console.log(`exampleMakeIDv5: ${exampleMakeIDv5}\r\n`);
+console.log(`makeID : exampleMakeIDv5: ${exampleMakeIDv5}\r\n`);
 
 /******************************************************************************/
 
@@ -86,7 +86,7 @@ const exampleMakeIDv15 = makeID({
   name: `segcryptor! test`,
   namespace: `https://github.com/s3govesus/segcryptor`,
 });
-console.log(`exampleMakeIDv15: ${exampleMakeIDv15}\r\n`);
+console.log(`makeID : exampleMakeIDv15: ${exampleMakeIDv15}\r\n`);
 
 /******************************************************************************/
 
@@ -96,7 +96,7 @@ const exampleMakeIDv51 = makeID({
   name: `segcryptor! test`,
   namespace: `https://github.com/s3govesus/segcryptor`,
 });
-console.log(`exampleMakeIDv51: ${exampleMakeIDv51}\r\n`);
+console.log(`makeID : exampleMakeIDv51: ${exampleMakeIDv51}\r\n`);
 
 /******************************************************************************/
 
@@ -105,7 +105,7 @@ const exampleMakeIDv0 = makeID({
   version: `0`,
   seed: `lalalalalalalalalala`,
 });
-console.log(`exampleMakeIDv0: ${exampleMakeIDv0}\r\n`);
+console.log(`makeID : exampleMakeIDv0: ${exampleMakeIDv0}\r\n`);
 
 /******************************************************************************/
 
@@ -114,7 +114,7 @@ const exampleMakeIDv01 = makeID({
   version: `0.1`,
   seed: `oh no, this is horrible!`,
 });
-console.log(`exampleMakeIDv01: ${exampleMakeIDv01}\r\n`);
+console.log(`makeID : exampleMakeIDv01: ${exampleMakeIDv01}\r\n`);
 
 /******************************************************************************/
 
@@ -122,7 +122,7 @@ const exampleMakeIDv10 = makeID({
   version: `1.0`,
   seed: `oh boy, here we go again!`,
 });
-console.log(`exampleMakeIDv10: ${exampleMakeIDv10}\r\n`);
+console.log(`makeID : exampleMakeIDv10: ${exampleMakeIDv10}\r\n`);
 
 /******************************************************************************/
 
@@ -132,7 +132,7 @@ const exampleMakeIDv03 = makeID({
   name: `this is an example name, i guess`,
   namespace: `https://www.google.com`,
 });
-console.log(`exampleMakeIDv03: ${exampleMakeIDv03}\r\n`);
+console.log(`makeID : exampleMakeIDv03: ${exampleMakeIDv03}\r\n`);
 
 /******************************************************************************/
 
@@ -142,7 +142,7 @@ const exampleMakeIDv30 = makeID({
   name: `names are dumb`,
   namespace: `https://namespacesaredumber.com`,
 });
-console.log(`exampleMakeIDv30: ${exampleMakeIDv30}\r\n`);
+console.log(`makeID : exampleMakeIDv30: ${exampleMakeIDv30}\r\n`);
 
 /******************************************************************************/
 
@@ -150,7 +150,7 @@ const exampleMakeIDv04 = makeID({
   version: `0.4`,
   seed: `what is a seed?`,
 });
-console.log(`exampleMakeIDv04: ${exampleMakeIDv04}\r\n`);
+console.log(`makeID : exampleMakeIDv04: ${exampleMakeIDv04}\r\n`);
 
 /******************************************************************************/
 
@@ -158,7 +158,7 @@ const exampleMakeIDv40 = makeID({
   version: `4.0`,
   seed: `broccoli smells a lot like farts - it's my favorite vegetable!`,
 });
-console.log(`exampleMakeIDv40: ${exampleMakeIDv40}\r\n`);
+console.log(`makeID : exampleMakeIDv40: ${exampleMakeIDv40}\r\n`);
 
 /******************************************************************************/
 
@@ -168,7 +168,7 @@ const exampleMakeIDv05 = makeID({
   name: `it ain't what they call you, it's what you answer to`,
   namespace: `https://wcfields.com`,
 });
-console.log(`exampleMakeIDv05: ${exampleMakeIDv05}\r\n`);
+console.log(`makeID : exampleMakeIDv05: ${exampleMakeIDv05}\r\n`);
 
 /******************************************************************************/
 
@@ -178,7 +178,7 @@ const exampleMakeIDv50 = makeID({
   name: `Matshona Dhliwayo`,
   namespace: `https://matshonadhliwayo.net`,
 });
-console.log(`exampleMakeIDv50: ${exampleMakeIDv50}\r\n`);
+console.log(`makeID : exampleMakeIDv50: ${exampleMakeIDv50}\r\n`);
 
 /******************************************************************************/
 
@@ -187,7 +187,7 @@ const exampleMakeHash = makeHash({
   size: 8,
   isSecure: true,
 });
-console.log(`exampleMakeHash: ${exampleMakeHash}\r\n`);
+console.log(`makeHash : exampleMakeHash: ${exampleMakeHash}\r\n`);
 
 /******************************************************************************/
 
@@ -196,7 +196,7 @@ const exampleMakeKey = makeKey({
   size: 16,
   isComplex: true,
 });
-console.log(`exampleMakeKey: ${exampleMakeKey}\r\n`);
+console.log(`makeKey : exampleMakeKey: ${exampleMakeKey}\r\n`);
 
 /******************************************************************************/
 
@@ -210,18 +210,21 @@ const exampleEncryptPassword = encryptPassword(passwordHash, saltHash, {
 });
 console.log(`passwordHash: ${passwordHash}`);
 console.log(`salt: ${salt}`);
-console.log(`exampleEncryptPassword: ${exampleEncryptPassword}\r\n`);
+console.log(`encryptPassword : exampleEncryptPassword: ${exampleEncryptPassword}\r\n`);
 
 /******************************************************************************/
 
 // test applying salt to a password hash
 const saltedHash = saltHash(passwordHash, salt);
-console.log(`saltedHash: ${saltedHash}\r\n`);
+console.log(`saltHash : saltedHash: ${saltedHash}\r\n`);
 
 /******************************************************************************/
 
 // test applying the SHA-512 algorithm to a string
-const exampleHashValue = hashValue(`this is an example`, { count: 5 });
-console.log(`exampleHashValue: ${exampleHashValue}\r\n`);
+const exampleHashValue512 = hashValue(`this is an example`, { count: 5, type: `sha512` });
+console.log(`hashValue : exampleHashValue512: ${exampleHashValue512}\r\n`);
+
+const exampleHashValue256 = hashValue(`this is an example`, { count: 5, type: `sha256` });
+console.log(`hashValue : exampleHashValue256: ${exampleHashValue256}\r\n`);
 
 // TODO add encrypt and decrypt tests

@@ -1,4 +1,3 @@
-const { sha512Hex } = require(`./sha`);
 const { v1: uuidv1 } = require(`uuid`);
 // there is no uuidv2 function
 const { v3: uuidv3 } = require(`uuid`);
@@ -874,15 +873,23 @@ module.exports.hashValue = (str, options) => {
   if (options === undefined) {
     options = {
       count: 1,
+      type: `sha512`,
     };
-  } else if (options.count === undefined) {
-    options.count = 1;
   } else {
-    options.count = Number(options.count);
+    if (options.count === undefined) {
+      options.count = 1;
+    } else {
+      options.count = Number(options.count);
+    }
+    if (options.type === undefined) {
+      options.type = `sha512`;
+    } else {
+      options.type = String(options.type);
+    }
   }
 
   for (let i = 0; i < options.count; i += 1) {
-    value = sha512Hex(value);
+    value = crypto.createHash(options.type).update(value).digest(`hex`);//sha512Hex(value);
   }
 
   return value;
