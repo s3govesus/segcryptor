@@ -1,5 +1,9 @@
 ## CHANGELOG
 
+### 1.5.1: hexadecimal conversion functions
+- added `hexToLatin()` for converting a string of hexadecimal characters to plain-text latin encoded characters
+- added `latinToHex()` for converting a string of plain-text latin encoded characters to a string of hexadecimal characters
+
 ### 1.4.1: hashValue improvements
 - modified `hashValue()` to use the integrated `crypto` API for handling hashing SHA encryptions
 - deleted '/sha.js'

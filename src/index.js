@@ -924,6 +924,35 @@ const { toBoolean } = this;
 
 /******************************************************************************/
 
+// takes a string of hexadecimal characters and converts them to plain-text latin1 encoded characters
+module.exports.hexToLatin = (hexStr) => {
+  let result;
+
+  result = hexStr.split(/(\w\w)/g)
+    .filter((p) => !!p)
+    .map((c) => String.fromCharCode(parseInt(c, 16)))
+    .join(``);
+
+  return result;
+};
+const { hexToLatin } = this;
+
+/******************************************************************************/
+
+// takes a string of characters in plaintext and converts them to a hexadecimal string
+module.exports.latinToHex = (plainStr) => {
+  let result;
+
+  result = plainStr.split(``)
+    .map((c) => c.charCodeAt(0).toString(16).padStart(2, `0`))
+    .join(``);
+
+  return result;
+};
+const { latinToHex } = this;
+
+/******************************************************************************/
+
 // a wrapper for crypto.randomBytes, as this will commonly be used with encrypt() and decrypt()
 module.exports.randomBytes = (size) => crypto.randomBytes(size);
 const { randomBytes } = this;
