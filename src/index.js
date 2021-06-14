@@ -34,6 +34,123 @@ function toBoolean(value) {
 
 /******************************************************************************/
 
+// generates an ID usually made up of one or more of the UUID algorithms
+//
+// EXAMPLE OPTIONS
+// const options = {
+//   version: 4, // the version of UUID or segcryptor-specific ID to generate
+//   name: `segcryptor default`, // UUIDv3 or UUIDv5 specific parameter
+//   namespace: `https://github.com/s3govesus/segcryptor`, // UUIDv3 or UUIDv5 specific parameter
+//   seed: `1582683512738` // version 0 / segcryptor-specific parameter of random data - uses Date.now().toString() by default
+// };
+function makeID(options) {
+  let value = ``;
+
+  // apply default settings if necessary
+  try {
+    if (options === undefined || typeof options !== `object`) {
+      options = {
+        version: 4,
+        name: Date.now().toString(),
+        namespace: `https://github.com/s3govesus/segcryptor`,
+        seed: Date.now().toString(),
+      };
+    } else {
+      if (options.version === undefined) {
+        options.version = `4`;
+      } else if (typeof options.version !== `string`) {
+        throw new Error(`The value for the 'version' option in makeID() must be a string.`);
+      }
+      if (options.name === undefined) {
+        options.name = Date.now().toString();
+      } else {
+        options.name = options.name.toString();
+      }
+      if (options.namespace === undefined) {
+        options.namespace = `https://github.com/s3govesus/segcryptor`;
+      } else {
+        options.namespace = options.namespace.toString();
+      }
+      if (options.seed === undefined) {
+        options.seed = Date.now().toString();
+      } else {
+        options.seed = options.seed.toString();
+      }
+    }
+  } catch (ex) {
+    // ? TODO
+    throw new Error(ex.message);
+  }
+
+  // decide what kind of ID to generate based on the options parameter and do it
+  switch (options.version) {
+    case `1`:
+      value = makev1();
+      break;
+    case `3`:
+      value = makev3(options);
+      break;
+    case `1.3`:
+      value = makev13(options);
+      break;
+    case `3.1`:
+      value = makev31(options);
+      break;
+    case `4`:
+      value = makev4();
+      break;
+    case `1.4`:
+      value = makev14();
+      break;
+    case `4.1`:
+      value = makev41();
+      break;
+    case `5`:
+      value = makev5(options);
+      break;
+    case `1.5`:
+      value = makev15(options);
+      break;
+    case `5.1`:
+      value = makev51(options);
+      break;
+    case `0`: // randomly generated 256-bit uuid of my own design, with optional seed parameter
+      value = makev0(options);
+      break;
+    case `0.1`:
+      value = makev01(options);
+      break;
+    case `1.0`:
+      value = makev10(options);
+      break;
+    case `0.3`:
+      value = makev03(options);
+      break;
+    case `3.0`:
+      value = makev30(options);
+      break;
+    case `0.4`:
+      value = makev04(options);
+      break;
+    case `4.0`:
+      value = makev40(options);
+      break;
+    case `0.5`:
+      value = makev05(options);
+      break;
+    case `5.0`:
+      value = makev50(options);
+      break;
+    default: // v4
+      value = makev4();
+      break;
+  }
+
+  return value;
+}
+
+/******************************************************************************/
+
 function makev1() {
   let value = ``;
 
@@ -501,119 +618,143 @@ function makeID256(seed) {
 
 /******************************************************************************/
 
-// generates an ID usually made up of one or more of the UUID algorithms
+// makes a random hexadecimal hash
 //
 // EXAMPLE OPTIONS
 // const options = {
-//   version: 4, // the version of UUID or segcryptor-specific ID to generate
-//   name: `segcryptor default`, // UUIDv3 or UUIDv5 specific parameter
-//   namespace: `https://github.com/s3govesus/segcryptor`, // UUIDv3 or UUIDv5 specific parameter
-//   seed: `1582683512738` // version 0 / segcryptor-specific parameter of random data - uses Date.now().toString() by default
+//   size: 64, // how many bytes of hexadecimal data to generate - 512 bits = 64 bytes
+//   isSecure: false,
 // };
-function makeID(options) {
-  let value = ``;
-
-  // apply default settings if necessary
+// NOTE size is in BYTES : 1 BYTE = 8 BITS = 2 HEX Characters
+// string length = size * 2
+function makeHash(options) {
+  // get the options or fill with defaults
   try {
     if (options === undefined || typeof options !== `object`) {
       options = {
-        version: 4,
-        name: Date.now().toString(),
-        namespace: `https://github.com/s3govesus/segcryptor`,
-        seed: Date.now().toString(),
+        size: 64,
+        isSecure: false,
       };
     } else {
-      if (options.version === undefined) {
-        options.version = `4`;
-      } else if (typeof options.version !== `string`) {
-        throw new Error(`The value for the 'version' option in makeID() must be a string.`);
-      }
-      if (options.name === undefined) {
-        options.name = Date.now().toString();
+      if (options.size === undefined) {
+        options.size = 64;
       } else {
-        options.name = options.name.toString();
+        options.size = Number(options.size);
       }
-      if (options.namespace === undefined) {
-        options.namespace = `https://github.com/s3govesus/segcryptor`;
+      if (options.isSecure === undefined) {
+        options.isSecure = false;
       } else {
-        options.namespace = options.namespace.toString();
-      }
-      if (options.seed === undefined) {
-        options.seed = Date.now().toString();
-      } else {
-        options.seed = options.seed.toString();
+        options.isSecure = toBoolean(options.isSecure);
       }
     }
   } catch (ex) {
     // ? TODO
-    throw new Error(ex.message);
+    throw new Error(
+      `An exception error occurred while attempting to parse the options for the hash generation function : ${ex.message}`,
+    );
   }
 
-  // decide what kind of ID to generate based on the options parameter and do it
-  switch (options.version) {
-    case `1`:
-      value = makev1();
-      break;
-    case `3`:
-      value = makev3(options);
-      break;
-    case `1.3`:
-      value = makev13(options);
-      break;
-    case `3.1`:
-      value = makev31(options);
-      break;
-    case `4`:
-      value = makev4();
-      break;
-    case `1.4`:
-      value = makev14();
-      break;
-    case `4.1`:
-      value = makev41();
-      break;
-    case `5`:
-      value = makev5(options);
-      break;
-    case `1.5`:
-      value = makev15(options);
-      break;
-    case `5.1`:
-      value = makev51(options);
-      break;
-    case `0`: // randomly generated 256-bit uuid of my own design, with optional seed parameter
-      value = makev0(options);
-      break;
-    case `0.1`:
-      value = makev01(options);
-      break;
-    case `1.0`:
-      value = makev10(options);
-      break;
-    case `0.3`:
-      value = makev03(options);
-      break;
-    case `3.0`:
-      value = makev30(options);
-      break;
-    case `0.4`:
-      value = makev04(options);
-      break;
-    case `4.0`:
-      value = makev40(options);
-      break;
-    case `0.5`:
-      value = makev05(options);
-      break;
-    case `5.0`:
-      value = makev50(options);
-      break;
-    default: // v4
-      value = makev4();
-      break;
+  let numString = ``;
+
+  if (options.isSecure === true) {
+    const numStringArr = new Array(options.size);
+    let allBytesFilled = false;
+    do {
+      // figure out which byte/iteration to generate
+      const currentByte = Math.floor(Math.random() * options.size);
+      if (numStringArr[currentByte] === undefined) {
+        // generate a random byte and assign it to the current iteration
+        const currentNum = Math.floor(Math.random() * 256);
+        numStringArr[currentByte] = currentNum.toString(16);
+      }
+      // check if all the bytes are filled
+      for (let i = 0; i < numStringArr.length; i += 1) {
+        if (numStringArr[i] === undefined) {
+          allBytesFilled = false;
+          break;
+        } else {
+          allBytesFilled = true;
+        }
+      }
+    } while (allBytesFilled === false);
+    // build the string using each byte in the array
+    for (let i = 0; i < numStringArr.length; i += 1) {
+      if (numStringArr[i].length === 1) {
+        numStringArr[i] = `0${numStringArr[i]}`;
+      }
+      numString += numStringArr[i];
+    }
+  } else {
+    for (let i = 0; i < options.size; i += 1) {
+      const currentNum = Math.floor(Math.random() * 256);
+      let currentNumString = currentNum.toString(16);
+      if (currentNumString.length === 1) {
+        currentNumString = `0${currentNumString}`;
+      }
+      numString += currentNumString;
+    }
   }
 
-  return value;
+  return numString;
+}
+
+/******************************************************************************/
+
+// TODO add the complex mode from makeHash to this function
+// makes a randomized alphanumeric key string
+//
+// EXAMPLE OPTIONS
+// const options = {
+//   size: 20, // must be an integer greater than 0
+//   isComplex: false // whether to generate a case-sensitive key with both uppercase and lowercase characters (isComplex:true) or a key with only lowercase characters (isComplex:false)
+//   TODO add an option called 'hyphenInterval' which adds a hyphen after a specific number of characters
+//   TODO add an option called 'hyphenCount' which is sort of like 'hyphenInterval', but instead attempts to evenly space out the characters around a certain total number of hyphens to place in the string
+//   TODO add a 'toUpperCase' option that will capitalize all the letters (assuming 'isComplex' was also false)
+// }
+function makeKey(options) {
+  try {
+    if (options === undefined || typeof options !== `object`) {
+      options = {
+        size: 20, // how many characters to generate
+        isComplex: false, // if true, the string will include both uppercase and lowercase characters
+      };
+    } else {
+      if (options.size === undefined) {
+        options.size = 20;
+      } else {
+        options.size = Number(options.size);
+      }
+      if (options.isComplex === undefined) {
+        options.isComplex = false;
+      } else {
+        options.isComplex = toBoolean(options.isComplex);
+      }
+    }
+    if (options.size % 1 !== 0 || options.size < 1) {
+      // error, size must be an integer greater than or equal to 1
+      throw new Error(
+        `The size options for the key generation function was not an integer (whole number) greater than or equal to 1.`,
+      );
+    }
+  } catch (ex) {
+    throw new Error(
+      `An exception error occurred while attempting to parse the options for the key generation function : ${ex.message}`,
+    );
+  }
+
+  let upperRange = 36;
+  if (options.isComplex === true) {
+    upperRange = 62;
+  } else {
+    upperRange = 36;
+  }
+  let result = ``;
+  const characters = `0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ`;
+  for (let i = 0; i < options.size; i += 1) {
+    const rando = Math.floor(Math.random() * upperRange);
+    result += characters[rando];
+  }
+  return result;
 }
 
 /******************************************************************************/
@@ -818,4 +959,6 @@ module.exports = {
   hexToLatin,
   latinToHex,
   randomBytes,
+  makeHash,
+  makeKey,
 };

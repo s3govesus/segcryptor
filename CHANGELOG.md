@@ -1,5 +1,8 @@
 ## CHANGELOG
 
+### 1.5.7: makeHash makeKey reimplemented
+- fixed an issue with the last commit where my linter decided to randomly remove `makeHash()` and `makeKey()`
+
 ### 1.5.6: module.exports restructure
 - restructured how functions are exported to try to fix the previous issues and maybe clean up the code a little
 
