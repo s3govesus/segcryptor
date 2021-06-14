@@ -1,5 +1,5 @@
 const {
-  makeID, makeHash, makeKey, encryptPassword, hashValue, saltHash,
+  makeID, makeHash, makeKey, encryptPassword, hashValue, saltHash, toBoolean,
 } = require(`../src/index`);
 
 /******************************************************************************/
@@ -226,5 +226,18 @@ console.log(`hashValue : exampleHashValue512: ${exampleHashValue512}\r\n`);
 
 const exampleHashValue256 = hashValue(`this is an example`, { count: 5, type: `sha256` });
 console.log(`hashValue : exampleHashValue256: ${exampleHashValue256}\r\n`);
+
+/******************************************************************************/
+
+const exampleToBoolean1 = toBoolean(`true`);
+console.log(`toBoolean : exampleToBoolean1 : ${exampleToBoolean1}`);
+
+const exampleToBoolean2 = toBoolean(1);
+console.log(`toBoolean : exampleToBoolean2 : ${exampleToBoolean2}`);
+
+const exampleToBoolean3 = toBoolean(`off`);
+console.log(`toBoolean : exampleToBoolean3 : ${exampleToBoolean3}`);
+
+/******************************************************************************/
 
 // TODO add encrypt and decrypt tests

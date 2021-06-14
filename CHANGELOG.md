@@ -1,5 +1,9 @@
 ## CHANGELOG
 
+### 1.5.3: tests and rearrangement
+- moved the `toBoolean()` function to the top of the code
+- added tests for `toBoolean()`
+
 ### 1.5.2: makeKey toBoolean fix
 - fixed an issue with `makeKey()` where it was trying to call `toBoolean()` on `this` even though `this` wasn't applicable in that context
 

@@ -9,6 +9,32 @@ const uuidRegex = /^([a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}
 
 /******************************************************************************/
 
+// converts a string or numeric value to a boolean true or false
+module.exports.toBoolean = (value) => {
+  if (typeof value === `number`) {
+    if (value === 1) {
+      return true;
+    }
+    return false;
+  }
+  if (typeof value === `string`) {
+    value = value.toLowerCase();
+    if (value === `true` || value === `yes` || value === `y` || value === `1`) {
+      return true;
+    }
+    return false;
+  }
+  if (typeof value === `boolean`) {
+    return value;
+  }
+  throw new Error(
+    `Error attempting to parse ${JSON.stringify(value)} as a boolean value.`,
+  );
+};
+const { toBoolean } = this;
+
+/******************************************************************************/
+
 // generates an ID usually made up of one or more of the UUID algorithms
 //
 // EXAMPLE OPTIONS
@@ -895,32 +921,6 @@ module.exports.hashValue = (str, options) => {
   return value;
 };
 const { hashValue } = this;
-
-/******************************************************************************/
-
-// converts a string or numeric value to a boolean true or false
-module.exports.toBoolean = (value) => {
-  if (typeof value === `number`) {
-    if (value === 1) {
-      return true;
-    }
-    return false;
-  }
-  if (typeof value === `string`) {
-    value = value.toLowerCase();
-    if (value === `true` || value === `yes` || value === `y` || value === `1`) {
-      return true;
-    }
-    return false;
-  }
-  if (typeof value === `boolean`) {
-    return value;
-  }
-  throw new Error(
-    `Error attempting to parse ${JSON.stringify(value)} as a boolean value.`,
-  );
-};
-const { toBoolean } = this;
 
 /******************************************************************************/
 
