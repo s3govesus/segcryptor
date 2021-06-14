@@ -41,7 +41,7 @@ const { toBoolean } = this;
 // const options = {
 //   version: 4, // the version of UUID or segcryptor-specific ID to generate
 //   name: `segcryptor default`, // UUIDv3 or UUIDv5 specific parameter
-//   namespace: `https://github.com/s3govesus/segcrpytor`, // UUIDv3 or UUIDv5 specific parameter
+//   namespace: `https://github.com/s3govesus/segcryptor`, // UUIDv3 or UUIDv5 specific parameter
 //   seed: `1582683512738` // version 0 / segcryptor-specific parameter of random data - uses Date.now().toString() by default
 // };
 module.exports.makeID = (options) => {
@@ -149,7 +149,6 @@ module.exports.makeID = (options) => {
 
   return value;
 };
-const { makeID } = this;
 
 /******************************************************************************/
 
@@ -646,7 +645,7 @@ module.exports.makeHash = (options) => {
       if (options.isSecure === undefined) {
         options.isSecure = false;
       } else {
-        options.isSecure = this.toBoolean(options.isSecure);
+        options.isSecure = toBoolean(options.isSecure);
       }
     }
   } catch (ex) {
@@ -699,7 +698,6 @@ module.exports.makeHash = (options) => {
 
   return numString;
 };
-const { makeHash } = this;
 
 /******************************************************************************/
 
@@ -730,7 +728,7 @@ module.exports.makeKey = (options) => {
       if (options.isComplex === undefined) {
         options.isComplex = false;
       } else {
-        options.isComplex = this.toBoolean(options.isComplex);
+        options.isComplex = toBoolean(options.isComplex);
       }
     }
     if (options.size % 1 !== 0 || options.size < 1) {
@@ -759,7 +757,6 @@ module.exports.makeKey = (options) => {
   }
   return result;
 };
-const { makeKey } = this;
 
 /******************************************************************************/
 
@@ -790,12 +787,11 @@ module.exports.encryptPassword = (hash, salt, options) => {
     );
   }
 
-  value = this.saltHash(hash, salt);
-  value = this.hashValue(value, options);
+  value = saltHash(hash, salt);
+  value = hashValue(value, options);
 
   return value;
 };
-const { encryptPassword } = this;
 
 /******************************************************************************/
 
@@ -852,7 +848,6 @@ module.exports.encrypt = (str, key, iv) => {
   // returning iv and encrypted data
   return encrypted.toString(`hex`);
 };
-const { encrypt } = this;
 
 /******************************************************************************/
 
@@ -883,7 +878,6 @@ module.exports.decrypt = (data, key, iv) => {
   // returns data after decryption
   return decrypted.toString();
 };
-const { decrypt } = this;
 
 /******************************************************************************/
 
@@ -933,9 +927,9 @@ module.exports.hexToLatin = (hexStr) => {
     .map((c) => String.fromCharCode(parseInt(c, 16)))
     .join(``);
 
+  // let x = toBoolean();
   return result;
 };
-const { hexToLatin } = this;
 
 /******************************************************************************/
 
@@ -949,10 +943,8 @@ module.exports.latinToHex = (plainStr) => {
 
   return result;
 };
-const { latinToHex } = this;
 
 /******************************************************************************/
 
 // a wrapper for crypto.randomBytes, as this will commonly be used with encrypt() and decrypt()
 module.exports.randomBytes = (size) => crypto.randomBytes(size);
-const { randomBytes } = this;

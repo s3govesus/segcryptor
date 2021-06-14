@@ -1,5 +1,8 @@
 ## CHANGELOG
 
+### 1.5.5: another attempt
+- trying once again to fix some dumb issue with functions that call `toBoolean()` not working properly in other projects
+
 ### 1.5.4: reverted 1.5.2
 - reverted the changes in 1.5.2
 

@@ -32,7 +32,7 @@ module.exports = {
     'no-global-assign': 1,
     'global-require': 0,
     'prefer-destructuring': 0,
-    'no-use-before-define': 1,
+    'no-use-before-define': 0,
     'no-console': 0,
     'no-lonely-if': 0,
     'no-empty': 1,
