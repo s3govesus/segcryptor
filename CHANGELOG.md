@@ -1,5 +1,8 @@
 ## CHANGELOG
 
+### 1.5.6: module.exports restructure
+- restructured how functions are exported to try to fix the previous issues and maybe clean up the code a little
+
 ### 1.5.5: another attempt
 - trying once again to fix some dumb issue with functions that call `toBoolean()` not working properly in other projects
 

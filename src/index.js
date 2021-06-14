@@ -10,7 +10,7 @@ const uuidRegex = /^([a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}
 /******************************************************************************/
 
 // converts a string or numeric value to a boolean true or false
-module.exports.toBoolean = (value) => {
+function toBoolean(value) {
   if (typeof value === `number`) {
     if (value === 1) {
       return true;
@@ -30,125 +30,7 @@ module.exports.toBoolean = (value) => {
   throw new Error(
     `Error attempting to parse ${JSON.stringify(value)} as a boolean value.`,
   );
-};
-const { toBoolean } = this;
-
-/******************************************************************************/
-
-// generates an ID usually made up of one or more of the UUID algorithms
-//
-// EXAMPLE OPTIONS
-// const options = {
-//   version: 4, // the version of UUID or segcryptor-specific ID to generate
-//   name: `segcryptor default`, // UUIDv3 or UUIDv5 specific parameter
-//   namespace: `https://github.com/s3govesus/segcryptor`, // UUIDv3 or UUIDv5 specific parameter
-//   seed: `1582683512738` // version 0 / segcryptor-specific parameter of random data - uses Date.now().toString() by default
-// };
-module.exports.makeID = (options) => {
-  let value = ``;
-
-  // apply default settings if necessary
-  try {
-    if (options === undefined || typeof options !== `object`) {
-      options = {
-        version: 4,
-        name: Date.now().toString(),
-        namespace: `https://github.com/s3govesus/segcryptor`,
-        seed: Date.now().toString(),
-      };
-    } else {
-      if (options.version === undefined) {
-        options.version = `4`;
-      } else if (typeof options.version !== `string`) {
-        throw new Error(`The value for the 'version' option in makeID() must be a string.`);
-      }
-      if (options.name === undefined) {
-        options.name = Date.now().toString();
-      } else {
-        options.name = options.name.toString();
-      }
-      if (options.namespace === undefined) {
-        options.namespace = `https://github.com/s3govesus/segcryptor`;
-      } else {
-        options.namespace = options.namespace.toString();
-      }
-      if (options.seed === undefined) {
-        options.seed = Date.now().toString();
-      } else {
-        options.seed = options.seed.toString();
-      }
-    }
-  } catch (ex) {
-    // ? TODO
-    throw new Error(ex.message);
-  }
-
-  // decide what kind of ID to generate based on the options parameter and do it
-  switch (options.version) {
-    case `1`:
-      value = makev1();
-      break;
-    case `3`:
-      value = makev3(options);
-      break;
-    case `1.3`:
-      value = makev13(options);
-      break;
-    case `3.1`:
-      value = makev31(options);
-      break;
-    case `4`:
-      value = makev4();
-      break;
-    case `1.4`:
-      value = makev14();
-      break;
-    case `4.1`:
-      value = makev41();
-      break;
-    case `5`:
-      value = makev5(options);
-      break;
-    case `1.5`:
-      value = makev15(options);
-      break;
-    case `5.1`:
-      value = makev51(options);
-      break;
-    case `0`: // randomly generated 256-bit uuid of my own design, with optional seed parameter
-      value = makev0(options);
-      break;
-    case `0.1`:
-      value = makev01(options);
-      break;
-    case `1.0`:
-      value = makev10(options);
-      break;
-    case `0.3`:
-      value = makev03(options);
-      break;
-    case `3.0`:
-      value = makev30(options);
-      break;
-    case `0.4`:
-      value = makev04(options);
-      break;
-    case `4.0`:
-      value = makev40(options);
-      break;
-    case `0.5`:
-      value = makev05(options);
-      break;
-    case `5.0`:
-      value = makev50(options);
-      break;
-    default: // v4
-      value = makev4();
-      break;
-  }
-
-  return value;
-};
+}
 
 /******************************************************************************/
 
@@ -619,144 +501,120 @@ function makeID256(seed) {
 
 /******************************************************************************/
 
-// makes a random hexadecimal hash
+// generates an ID usually made up of one or more of the UUID algorithms
 //
 // EXAMPLE OPTIONS
 // const options = {
-//   size: 64, // how many bytes of hexadecimal data to generate - 512 bits = 64 bytes
-//   isSecure: false,
+//   version: 4, // the version of UUID or segcryptor-specific ID to generate
+//   name: `segcryptor default`, // UUIDv3 or UUIDv5 specific parameter
+//   namespace: `https://github.com/s3govesus/segcryptor`, // UUIDv3 or UUIDv5 specific parameter
+//   seed: `1582683512738` // version 0 / segcryptor-specific parameter of random data - uses Date.now().toString() by default
 // };
-// NOTE size is in BYTES : 1 BYTE = 8 BITS = 2 HEX Characters
-// string length = size * 2
-module.exports.makeHash = (options) => {
-  // get the options or fill with defaults
+function makeID(options) {
+  let value = ``;
+
+  // apply default settings if necessary
   try {
     if (options === undefined || typeof options !== `object`) {
       options = {
-        size: 64,
-        isSecure: false,
+        version: 4,
+        name: Date.now().toString(),
+        namespace: `https://github.com/s3govesus/segcryptor`,
+        seed: Date.now().toString(),
       };
     } else {
-      if (options.size === undefined) {
-        options.size = 64;
-      } else {
-        options.size = Number(options.size);
+      if (options.version === undefined) {
+        options.version = `4`;
+      } else if (typeof options.version !== `string`) {
+        throw new Error(`The value for the 'version' option in makeID() must be a string.`);
       }
-      if (options.isSecure === undefined) {
-        options.isSecure = false;
+      if (options.name === undefined) {
+        options.name = Date.now().toString();
       } else {
-        options.isSecure = toBoolean(options.isSecure);
+        options.name = options.name.toString();
+      }
+      if (options.namespace === undefined) {
+        options.namespace = `https://github.com/s3govesus/segcryptor`;
+      } else {
+        options.namespace = options.namespace.toString();
+      }
+      if (options.seed === undefined) {
+        options.seed = Date.now().toString();
+      } else {
+        options.seed = options.seed.toString();
       }
     }
   } catch (ex) {
     // ? TODO
-    throw new Error(
-      `An exception error occurred while attempting to parse the options for the hash generation function : ${ex.message}`,
-    );
+    throw new Error(ex.message);
   }
 
-  let numString = ``;
-
-  if (options.isSecure === true) {
-    const numStringArr = new Array(options.size);
-    let allBytesFilled = false;
-    do {
-      // figure out which byte/iteration to generate
-      const currentByte = Math.floor(Math.random() * options.size);
-      if (numStringArr[currentByte] === undefined) {
-        // generate a random byte and assign it to the current iteration
-        const currentNum = Math.floor(Math.random() * 256);
-        numStringArr[currentByte] = currentNum.toString(16);
-      }
-      // check if all the bytes are filled
-      for (let i = 0; i < numStringArr.length; i += 1) {
-        if (numStringArr[i] === undefined) {
-          allBytesFilled = false;
-          break;
-        } else {
-          allBytesFilled = true;
-        }
-      }
-    } while (allBytesFilled === false);
-    // build the string using each byte in the array
-    for (let i = 0; i < numStringArr.length; i += 1) {
-      if (numStringArr[i].length === 1) {
-        numStringArr[i] = `0${numStringArr[i]}`;
-      }
-      numString += numStringArr[i];
-    }
-  } else {
-    for (let i = 0; i < options.size; i += 1) {
-      const currentNum = Math.floor(Math.random() * 256);
-      let currentNumString = currentNum.toString(16);
-      if (currentNumString.length === 1) {
-        currentNumString = `0${currentNumString}`;
-      }
-      numString += currentNumString;
-    }
+  // decide what kind of ID to generate based on the options parameter and do it
+  switch (options.version) {
+    case `1`:
+      value = makev1();
+      break;
+    case `3`:
+      value = makev3(options);
+      break;
+    case `1.3`:
+      value = makev13(options);
+      break;
+    case `3.1`:
+      value = makev31(options);
+      break;
+    case `4`:
+      value = makev4();
+      break;
+    case `1.4`:
+      value = makev14();
+      break;
+    case `4.1`:
+      value = makev41();
+      break;
+    case `5`:
+      value = makev5(options);
+      break;
+    case `1.5`:
+      value = makev15(options);
+      break;
+    case `5.1`:
+      value = makev51(options);
+      break;
+    case `0`: // randomly generated 256-bit uuid of my own design, with optional seed parameter
+      value = makev0(options);
+      break;
+    case `0.1`:
+      value = makev01(options);
+      break;
+    case `1.0`:
+      value = makev10(options);
+      break;
+    case `0.3`:
+      value = makev03(options);
+      break;
+    case `3.0`:
+      value = makev30(options);
+      break;
+    case `0.4`:
+      value = makev04(options);
+      break;
+    case `4.0`:
+      value = makev40(options);
+      break;
+    case `0.5`:
+      value = makev05(options);
+      break;
+    case `5.0`:
+      value = makev50(options);
+      break;
+    default: // v4
+      value = makev4();
+      break;
   }
 
-  return numString;
-};
-
-/******************************************************************************/
-
-// TODO add the complex mode from makeHash to this function
-// makes a randomized alphanumeric key string
-//
-// EXAMPLE OPTIONS
-// const options = {
-//   size: 20, // must be an integer greater than 0
-//   isComplex: false // whether to generate a case-sensitive key with both uppercase and lowercase characters (isComplex:true) or a key with only lowercase characters (isComplex:false)
-//   TODO add an option called 'hyphenInterval' which adds a hyphen after a specific number of characters
-//   TODO add an option called 'hyphenCount' which is sort of like 'hyphenInterval', but instead attempts to evenly space out the characters around a certain total number of hyphens to place in the string
-//   TODO add a 'toUpperCase' option that will capitalize all the letters (assuming 'isComplex' was also false)
-// }
-module.exports.makeKey = (options) => {
-  try {
-    if (options === undefined || typeof options !== `object`) {
-      options = {
-        size: 20, // how many characters to generate
-        isComplex: false, // if true, the string will include both uppercase and lowercase characters
-      };
-    } else {
-      if (options.size === undefined) {
-        options.size = 20;
-      } else {
-        options.size = Number(options.size);
-      }
-      if (options.isComplex === undefined) {
-        options.isComplex = false;
-      } else {
-        options.isComplex = toBoolean(options.isComplex);
-      }
-    }
-    if (options.size % 1 !== 0 || options.size < 1) {
-      // error, size must be an integer greater than or equal to 1
-      throw new Error(
-        `The size options for the key generation function was not an integer (whole number) greater than or equal to 1.`,
-      );
-    }
-  } catch (ex) {
-    throw new Error(
-      `An exception error occurred while attempting to parse the options for the key generation function : ${ex.message}`,
-    );
-  }
-
-  let upperRange = 36;
-  if (options.isComplex === true) {
-    upperRange = 62;
-  } else {
-    upperRange = 36;
-  }
-  let result = ``;
-  const characters = `0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ`;
-  for (let i = 0; i < options.size; i += 1) {
-    const rando = Math.floor(Math.random() * upperRange);
-    result += characters[rando];
-  }
-  return result;
-};
+  return value;
+}
 
 /******************************************************************************/
 
@@ -766,7 +624,7 @@ module.exports.makeKey = (options) => {
 // const exOptions = {
 //   count: 3
 // };
-module.exports.encryptPassword = (hash, salt, options) => {
+function encryptPassword(hash, salt, options) {
   let value = ``;
 
   // fill in any blanks in the options parameter if necessary
@@ -791,12 +649,12 @@ module.exports.encryptPassword = (hash, salt, options) => {
   value = hashValue(value, options);
 
   return value;
-};
+}
 
 /******************************************************************************/
 
 // applies salt to a hash, then applies the SHA-512 algorithm to it
-module.exports.saltHash = (hash, salt) => {
+function saltHash(hash, salt) {
   let value = ``;
 
   // if the hash and string are the same length, interleave the two
@@ -816,15 +674,14 @@ module.exports.saltHash = (hash, salt) => {
   }
 
   return value;
-};
-const { saltHash } = this;
+}
 
 /******************************************************************************/
 
 // encrypts a string using the 'aes-256-cbc' algorithm
 // key and iv can be hexadecimal strings or a byte array
 // returns a hexadecimal string
-module.exports.encrypt = (str, key, iv) => {
+function encrypt(str, key, iv) {
   // convert key as necessary
   let key2 = key;
   if (typeof key2 === `string`) {
@@ -847,12 +704,12 @@ module.exports.encrypt = (str, key, iv) => {
 
   // returning iv and encrypted data
   return encrypted.toString(`hex`);
-};
+}
 
 /******************************************************************************/
 
 // decrypts a string that's been encrypted using the 'aes-256-cbc' algorithm
-module.exports.decrypt = (data, key, iv) => {
+function decrypt(data, key, iv) {
   // if key is a hexadecimal string, convert it to a byte array buffer
   let key2 = key;
   if (typeof key2 === `string`) {
@@ -877,7 +734,7 @@ module.exports.decrypt = (data, key, iv) => {
 
   // returns data after decryption
   return decrypted.toString();
-};
+}
 
 /******************************************************************************/
 
@@ -887,7 +744,7 @@ module.exports.decrypt = (data, key, iv) => {
 // exOptions = {
 //   count: 1,
 // };
-module.exports.hashValue = (str, options) => {
+function hashValue(str, options) {
   let value = str;
 
   if (options === undefined) {
@@ -913,13 +770,12 @@ module.exports.hashValue = (str, options) => {
   }
 
   return value;
-};
-const { hashValue } = this;
+}
 
 /******************************************************************************/
 
 // takes a string of hexadecimal characters and converts them to plain-text latin1 encoded characters
-module.exports.hexToLatin = (hexStr) => {
+function hexToLatin(hexStr) {
   let result;
 
   result = hexStr.split(/(\w\w)/g)
@@ -929,12 +785,12 @@ module.exports.hexToLatin = (hexStr) => {
 
   // let x = toBoolean();
   return result;
-};
+}
 
 /******************************************************************************/
 
 // takes a string of characters in plaintext and converts them to a hexadecimal string
-module.exports.latinToHex = (plainStr) => {
+function latinToHex(plainStr) {
   let result;
 
   result = plainStr.split(``)
@@ -942,9 +798,24 @@ module.exports.latinToHex = (plainStr) => {
     .join(``);
 
   return result;
-};
+}
 
 /******************************************************************************/
 
 // a wrapper for crypto.randomBytes, as this will commonly be used with encrypt() and decrypt()
-module.exports.randomBytes = (size) => crypto.randomBytes(size);
+function randomBytes(size) {
+  return crypto.randomBytes(size);
+}
+
+module.exports = {
+  toBoolean,
+  makeID,
+  encryptPassword,
+  saltHash,
+  encrypt,
+  decrypt,
+  hashValue,
+  hexToLatin,
+  latinToHex,
+  randomBytes,
+};
