@@ -1,5 +1,8 @@
 ## CHANGELOG
 
+### 1.5.2: makeKey toBoolean fix
+- fixed an issue with `makeKey()` where it was trying to call `toBoolean()` on `this` even though `this` wasn't applicable in that context
+
 ### 1.5.1: hexadecimal conversion functions
 - added `hexToLatin()` for converting a string of hexadecimal characters to plain-text latin encoded characters
 - added `latinToHex()` for converting a string of plain-text latin encoded characters to a string of hexadecimal characters

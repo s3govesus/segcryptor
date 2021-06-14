@@ -692,8 +692,8 @@ module.exports.makeKey = (options) => {
   try {
     if (options === undefined || typeof options !== `object`) {
       options = {
-        size: 20,
-        isComplex: false,
+        size: 20, // how many characters to generate
+        isComplex: false, // if true, the string will include both uppercase and lowercase characters
       };
     } else {
       if (options.size === undefined) {
@@ -704,7 +704,7 @@ module.exports.makeKey = (options) => {
       if (options.isComplex === undefined) {
         options.isComplex = false;
       } else {
-        options.isComplex = this.toBoolean(options.isComplex);
+        options.isComplex = toBoolean(options.isComplex);
       }
     }
     if (options.size % 1 !== 0 || options.size < 1) {
