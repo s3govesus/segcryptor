@@ -730,7 +730,7 @@ module.exports.makeKey = (options) => {
       if (options.isComplex === undefined) {
         options.isComplex = false;
       } else {
-        options.isComplex = toBoolean(options.isComplex);
+        options.isComplex = this.toBoolean(options.isComplex);
       }
     }
     if (options.size % 1 !== 0 || options.size < 1) {

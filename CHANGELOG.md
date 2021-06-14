@@ -1,5 +1,8 @@
 ## CHANGELOG
 
+### 1.5.4: reverted 1.5.2
+- reverted the changes in 1.5.2
+
 ### 1.5.3: tests and rearrangement
 - moved the `toBoolean()` function to the top of the code
 - added tests for `toBoolean()`
