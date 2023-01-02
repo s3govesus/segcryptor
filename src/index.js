@@ -4,6 +4,7 @@ const { v3: uuidv3 } = require(`uuid`);
 const { v4: uuidv4 } = require(`uuid`);
 const { v5: uuidv5 } = require(`uuid`);
 const crypto = require(`crypto`);
+const { sha512Hex } = require(`./sha`);
 
 const uuidRegex = /^([a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12})$/g;
 
@@ -820,7 +821,10 @@ function saltHash(hash, salt) {
 /******************************************************************************/
 
 // encrypts a string using the 'aes-256-cbc' algorithm
-// key and iv can be hexadecimal strings or a byte array
+// key and iv should be hexadecimal strings or a byte array
+// iv is the initialization vector - this should be a random value
+// key should be 32 hex characters?
+// iv should be 16 hex characters?
 // returns a hexadecimal string
 function encrypt(str, key, iv) {
   // convert key as necessary
@@ -907,7 +911,40 @@ function hashValue(str, options) {
   }
 
   for (let i = 0; i < options.count; i += 1) {
-    value = crypto.createHash(options.type).update(value).digest(`hex`);//sha512Hex(value);
+    value = crypto.createHash(options.type).update(value).digest(`hex`);
+    // value = sha512Hex(value);
+  }
+
+  return value;
+}
+
+/******************************************************************************/
+
+// a function for applying a SHA-512 hash to a string on the frontend - hashValue() uses nodejs-specific APIs and will only work on the backend
+function webHashValue(str, options) {
+  let value = str;
+
+  if (options === undefined) {
+    options = {
+      count: 1,
+      type: `sha512`,
+    };
+  } else {
+    if (options.count === undefined) {
+      options.count = 1;
+    } else {
+      options.count = Number(options.count);
+    }
+    if (options.type === undefined) {
+      options.type = `sha512`;
+    } else {
+      options.type = String(options.type);
+    }
+  }
+
+  for (let i = 0; i < options.count; i += 1) {
+    // value = crypto.createHash(options.type).update(value).digest(`hex`);
+    value = sha512Hex(value);
   }
 
   return value;
@@ -948,6 +985,8 @@ function randomBytes(size) {
   return crypto.randomBytes(size);
 }
 
+/******************************************************************************/
+
 module.exports = {
   toBoolean,
   makeID,
@@ -956,6 +995,7 @@ module.exports = {
   encrypt,
   decrypt,
   hashValue,
+  webHashValue,
   hexToLatin,
   latinToHex,
   randomBytes,

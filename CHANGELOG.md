@@ -1,5 +1,9 @@
 ## CHANGELOG
 
+### 1.6.1: webHashValue()
+- added `webHashValue()` for applying a SHA-512 hashing algorithm to a string on the frontend - `hashValue()` uses nodejs-specific APIs and will only work on the backend
+- added tests for `encrypt()` and `decrypt()`
+
 ### 1.5.7: makeHash makeKey reimplemented
 - fixed an issue with the last commit where my linter decided to randomly remove `makeHash()` and `makeKey()`
 

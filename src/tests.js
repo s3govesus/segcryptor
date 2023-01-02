@@ -1,5 +1,5 @@
 const {
-  makeID, makeHash, makeKey, encryptPassword, hashValue, saltHash, toBoolean,
+  makeID, makeHash, makeKey, encryptPassword, hashValue, saltHash, toBoolean, encrypt, decrypt,
 } = require(`../src/index`);
 
 /******************************************************************************/
@@ -240,4 +240,32 @@ console.log(`toBoolean : exampleToBoolean3 : ${exampleToBoolean3}`);
 
 /******************************************************************************/
 
-// TODO add encrypt and decrypt tests
+// test the encrypt() and decrypt() functions
+function testEncryptDecrypt() {
+  console.log(`Testing the encrypt() and decrypt() functions...`);
+  console.log();
+
+  let testStr = `This is a test.`;
+  console.log(`testStr : ${testStr}`);
+
+  let key = makeHash({
+    size: 32,
+  });
+  console.log(`key : ${key}`);
+
+  let iv = makeHash({
+    size: 16,
+  });
+  console.log(`iv : ${iv}`);
+
+  const encryptedStr = encrypt(testStr, key, iv);
+  console.log(`encryptedStr : ${encryptedStr}`);
+  let decryptedStr = decrypt(encryptedStr, key, iv);
+  console.log(`decryptedStr : ${decryptedStr}`);
+  console.log();
+  console.log(`Finished testing the encrypt() and decrypt() functions!`);
+  console.log(``);
+  console.log(`/******************************************************************************/`);
+  console.log(``);
+}
+testEncryptDecrypt();
