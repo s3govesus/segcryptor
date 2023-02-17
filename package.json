@@ -1,6 +1,6 @@
 {
   "name": "segcryptor",
-  "version": "1.6.1",
+  "version": "1.6.2",
   "description": "Some encryption stuff",
   "main": "src/index.js",
   "scripts": {
@@ -12,7 +12,7 @@
     "type": "git",
     "url": "git+https://github.com/s3govesus/segcryptor.git"
   },
-  "author": "Adam \"Seg\" Underwood",
+  "author": "Adam S. Underwood",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/s3govesus/segcryptor/issues"

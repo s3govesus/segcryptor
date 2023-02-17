@@ -1,5 +1,5 @@
 const {
-  makeID, makeHash, makeKey, encryptPassword, hashValue, saltHash, toBoolean, encrypt, decrypt,
+  makeID, makeHash, makeKey, encryptPassword, hashValue, saltHash, toBoolean, encrypt, decrypt, hexToLatin, latinToHex, webHashValue,
 } = require(`../src/index`);
 
 /******************************************************************************/
@@ -224,8 +224,11 @@ console.log(`saltHash : saltedHash: ${saltedHash}\r\n`);
 const exampleHashValue512 = hashValue(`this is an example`, { count: 5, type: `sha512` });
 console.log(`hashValue : exampleHashValue512: ${exampleHashValue512}\r\n`);
 
-const exampleHashValue256 = hashValue(`this is an example`, { count: 5, type: `sha256` });
+const exampleHashValue256 = hashValue(`this is an example`, { count: 12, type: `sha256` });
 console.log(`hashValue : exampleHashValue256: ${exampleHashValue256}\r\n`);
+
+const exampleHashValue512v2 = webHashValue(`this is an example`, { count: 7, type: `sha512` });
+console.log(`webHashValue : exampleHashValue512v2: ${exampleHashValue512v2}\r\n`);
 
 /******************************************************************************/
 
@@ -269,3 +272,37 @@ function testEncryptDecrypt() {
   console.log(``);
 }
 testEncryptDecrypt();
+
+/******************************************************************************/
+
+// test the latinToHex function
+function testLatinToHex() {
+  console.log(`Testing the latinToHex() function...`);
+  console.log();
+  let testStr = `this is a test`;
+  let hex = latinToHex(testStr);
+  console.log(`this is a test : ${hex}`);
+  console.log();
+  console.log(`Finished testing the latinToHex() function!`);
+  console.log();
+  console.log(`/******************************************************************************/`);
+  console.log();
+}
+testLatinToHex();
+
+/******************************************************************************/
+
+// test the hexToLatin function
+function testHexToLatin() {
+  console.log(`Testing the hexToLatin() function...`);
+  console.log();
+  let testStr = `7468697320697320612074657374`;
+  let latin = hexToLatin(testStr);
+  console.log(`7468697320697320612074657374 : ${latin}`);
+  console.log();
+  console.log(`Finished testing the hexToLatin() function!`);
+  console.log();
+  console.log(`/******************************************************************************/`);
+  console.log();
+}
+testHexToLatin();

@@ -1,5 +1,11 @@
 ## CHANGELOG
 
+### 1.6.2: reorganization
+- reorganized most of the code
+- modified `hashValue()` to no longer use nodejs-specific APIs - it should now work on frontend or backend
+- modified `webHashValue()` to point to `hashValue()` to maintain backwards compatibility, as there's no longer any need for a distinction between the two functions
+- added test examples for `hexToLatin()` and `latinToHex()` to `./src/tests.js`
+
 ### 1.6.1: webHashValue()
 - added `webHashValue()` for applying a SHA-512 hashing algorithm to a string on the frontend - `hashValue()` uses nodejs-specific APIs and will only work on the backend
 - added tests for `encrypt()` and `decrypt()`
