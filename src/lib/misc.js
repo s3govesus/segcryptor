@@ -22,7 +22,4 @@ function toBoolean(value) {
     `Error attempting to parse ${JSON.stringify(value)} as a boolean value.`,
   );
 }
-
-module.exports = {
-  toBoolean,
-};
+module.exports.toBoolean = toBoolean;

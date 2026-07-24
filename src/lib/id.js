@@ -6,7 +6,7 @@ const { v5: uuidv5 } = require(`uuid`);
 
 const { hashValue, saltHash } = require(`./hash`);
 
-const uuidRegex = /^([a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12})$/g;
+const uuidRegex = /^([a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12})$/;
 
 /******************************************************************************/
 
@@ -26,7 +26,7 @@ function makeID(options) {
   try {
     if (options === undefined || typeof options !== `object`) {
       options = {
-        version: 4,
+        version: `4`,
         name: Date.now().toString(),
         namespace: `https://github.com/s3govesus/segcryptor`,
         seed: Date.now().toString(),
@@ -124,6 +124,7 @@ function makeID(options) {
 
   return value;
 }
+module.exports.makeID = makeID;
 
 /******************************************************************************/
 
@@ -591,7 +592,3 @@ function makeID256(seed) {
 
   return result;
 }
-
-module.exports = {
-  makeID,
-};

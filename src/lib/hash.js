@@ -1,4 +1,4 @@
-const { sha512Hex } = require(`./sha`);
+const crypto = require(`crypto`);
 const { toBoolean } = require(`./misc`);
 
 /******************************************************************************/
@@ -31,12 +31,12 @@ function hashValue(str, options) {
   }
 
   for (let i = 0; i < options.count; i += 1) {
-    // value = crypto.createHash(options.type).update(value).digest(`hex`);
-    value = sha512Hex(value);
+    value = crypto.createHash(options.type).update(value).digest(`hex`);
   }
 
   return value;
 }
+module.exports.hashValue = hashValue;
 
 /******************************************************************************/
 
@@ -79,33 +79,8 @@ function makeHash(options) {
   let numString = ``;
 
   if (options.isSecure === true) {
-    const numStringArr = new Array(options.size);
-    let allBytesFilled = false;
-    do {
-      // figure out which byte/iteration to generate
-      const currentByte = Math.floor(Math.random() * options.size);
-      if (numStringArr[currentByte] === undefined) {
-        // generate a random byte and assign it to the current iteration
-        const currentNum = Math.floor(Math.random() * 256);
-        numStringArr[currentByte] = currentNum.toString(16);
-      }
-      // check if all the bytes are filled
-      for (let i = 0; i < numStringArr.length; i += 1) {
-        if (numStringArr[i] === undefined) {
-          allBytesFilled = false;
-          break;
-        } else {
-          allBytesFilled = true;
-        }
-      }
-    } while (allBytesFilled === false);
-    // build the string using each byte in the array
-    for (let i = 0; i < numStringArr.length; i += 1) {
-      if (numStringArr[i].length === 1) {
-        numStringArr[i] = `0${numStringArr[i]}`;
-      }
-      numString += numStringArr[i];
-    }
+    // use a cryptographically secure random source, as opposed to Math.random()
+    numString = crypto.randomBytes(options.size).toString(`hex`);
   } else {
     for (let i = 0; i < options.size; i += 1) {
       const currentNum = Math.floor(Math.random() * 256);
@@ -119,9 +94,11 @@ function makeHash(options) {
 
   return numString;
 }
+module.exports.makeHash = makeHash;
 
 /******************************************************************************/
 
+// TODO add other methods of applying the salt
 // applies salt to a hash, then applies the SHA-512 algorithm to it
 function saltHash(hash, salt) {
   let value = ``;
@@ -144,6 +121,7 @@ function saltHash(hash, salt) {
 
   return value;
 }
+module.exports.saltHash = saltHash;
 
 /******************************************************************************/
 
@@ -179,6 +157,7 @@ function encryptPassword(hash, salt, options) {
 
   return value;
 }
+module.exports.encryptPassword = encryptPassword;
 
 /******************************************************************************/
 
@@ -190,6 +169,7 @@ function encryptPassword(hash, salt, options) {
 //   size: 20, // must be an integer greater than 0
 //   isComplex: false // whether to generate a case-sensitive key with both uppercase and lowercase characters (isComplex:true) or a key with only lowercase characters (isComplex:false)
 //   TODO add an option called 'hyphenInterval' which adds a hyphen after a specific number of characters
+//   TODO with 'hyphenInterval' add an option to accept an array of indices where the hyphens should be
 //   TODO add an option called 'hyphenCount' which is sort of like 'hyphenInterval', but instead attempts to evenly space out the characters around a certain total number of hyphens to place in the string
 //   TODO add a 'toUpperCase' option that will capitalize all the letters (assuming 'isComplex' was also false)
 // }
@@ -238,11 +218,4 @@ function makeKey(options) {
   }
   return result;
 }
-
-module.exports = {
-  encryptPassword,
-  saltHash,
-  hashValue,
-  makeHash,
-  makeKey,
-};
+module.exports.makeKey = makeKey;

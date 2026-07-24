@@ -1,10 +1,11 @@
 {
   "name": "segcryptor",
-  "version": "1.6.2",
+  "version": "1.6.3",
   "description": "Some encryption stuff",
   "main": "src/index.js",
   "scripts": {
     "test": "node src/tests.js",
+    "tests": "node src/tests.js",
     "lint": "eslint --ext .js --ignore-path .gitignore .",
     "lintfix": "eslint --fix --ext .js --ignore-path .gitignore ."
   },

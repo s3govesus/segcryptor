@@ -205,8 +205,8 @@ console.log(`makeKey : exampleMakeKey: ${exampleMakeKey}\r\n`);
 // the salt should also be a 128-character hexadecimal string, like you would get after running SHA-512, or you could generate a random salt by using 'makeHash({size:64, isSecure:false})'
 const passwordHash = `43b71277bc68e66a5f183da93211c0e6796a0ece455e926556c01de44a9131eba4d10dc8869e20a5d2631231f48b43e494a29182997ca7702f162a6f78349e0e`;
 const salt = `9f3313fa38e30bd23db2445f5e57202f73dcc07d13c218b9e62cbeadd6da633f0e81defd6f8d013a7e556ac967cd2b5da0f876908ccb2b0e57fc8df41b948685`;
-const exampleEncryptPassword = encryptPassword(passwordHash, saltHash, {
-  security: 9, // this should run the SHA-512 algorithm 512 times to help prevent dictionary attacks
+const exampleEncryptPassword = encryptPassword(passwordHash, salt, {
+  count: 512, // run the SHA-512 algorithm 512 times to help prevent dictionary attacks
 });
 console.log(`passwordHash: ${passwordHash}`);
 console.log(`salt: ${salt}`);
