@@ -1,5 +1,8 @@
 ## CHANGELOG
 
+### 1.6.4: readme update
+- updated the README.md file
+
 ### 1.6.3: bug fixes
 - fixed `makeHash()` so that `isSecure: true` actually uses `crypto.randomBytes()` for a cryptographically secure random source, instead of `Math.random()`
 - fixed a bug in `makeID()` where the shared `uuidRegex` was declared with the global (`g`) flag and used with `.test()`, causing it to alternate between correct and incorrect results on successive calls due to regex `lastIndex` state
